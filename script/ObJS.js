@@ -15,8 +15,28 @@ var obj;
 var vert;
 var face;
 
+var dVerts = true;
+var dEdges = true;
+var dFaces = true;
+
+
 var pX = null;
 var pY = null;
+
+function drawElement(name, value){
+	switch (name){
+		case "verts":
+			dVerts = value;
+			break;
+		case "edges":
+			dEdges = value;
+			break;
+		case "faces":
+			dFaces = value;
+			break;
+	}
+	draw();
+}
 
 function loadModel(val){
 	//Get file
@@ -27,9 +47,7 @@ function loadModel(val){
 	initArrays();
 	readVerts(fileContent);
 	readFaces(fileContent);
-	initCanvas();
-	drawFaces();
-	drawVerts();
+	draw();
 	writeCredits();
 }
 
@@ -102,12 +120,22 @@ function drawFaces(){
 		ctx.moveTo(vert[face[i][0]][0], vert[face[i][0]][1]);
 		for (var j = 1; j < face[i].length; j++) {
 			ctx.lineTo(vert[face[i][j]][0], vert[face[i][j]][1]);
-			ctx.stroke();
+			if(dEdges)
+				ctx.stroke();
+				
 		}
 		ctx.closePath();
 		ctx.fillStyle = faceColor;
-		ctx.fill();
+		if(dFaces)
+			ctx.fill();
 	}
+}
+
+function draw(){
+	initCanvas();
+	drawFaces();
+	if (dVerts)
+		drawVerts();
 }
 
 function rotateY(theta) {
@@ -168,9 +196,7 @@ function initCanvas(){
 			pX = x;
 			pY = y;
 			
-			initCanvas();
-			drawFaces();
-			drawVerts();
+			draw();
 			return false;
 		}
 	}

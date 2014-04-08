@@ -7,16 +7,29 @@
 		<script type="text/javascript" src="script/ObJS.js"></script>
 		<!-- CSS files -->
 	</head>
-	<body>
-		<select id="objSelector" name="objSelector" onChange="loadModel(this)">
-			<option value="cube" selected="selected">Cube</option>
-			<option value="2cube">Two Cubes</option>
-			<option value="complex">Complex Object</option>
-			<option value="2complex">Two Complex Objects</option>
-		</select>
-		<br/>
-		<canvas id="ObJSCanvas" width="400" height="400">
-			Your browser does not support the HTML5 canvas tag.
-		</canvas>
+	<body onload="loadModel(document.getElementById('objSelector'));">
+		<table>
+			<tr>
+				<td>
+					<canvas id="ObJSCanvas" width="400" height="400">
+						Your browser does not support the HTML5 canvas tag.
+					</canvas>
+				</td>
+				<td>
+					<select id="objSelector" name="objSelector" onChange="loadModel(this)">
+						<option value="cube" selected="selected">Cube</option>
+						<option value="2cube">Two Cubes</option>
+						<option value="complex">Complex Object</option>
+						<option value="2complex">Two Complex Objects</option>
+					</select>
+					<br/>
+					<input type="checkbox" name="drawElement" value="verts" checked onChange="drawElement('verts', this.checked);">Vertices
+					<br/>
+					<input type="checkbox" name="drawElement" value="edges" checked onChange="drawElement('edges', this.checked);">Edges
+					<br/>
+					<input type="checkbox" name="drawElement" value="faces" checked onChange="drawElement('faces', this.checked);">Faces
+				</td>
+			</tr>
+		</table>
 	</body>
 </html>
