@@ -4,11 +4,11 @@
  ********************************************************************/ 
 var backColor = "rgba(200, 200, 200, 1)";
 var vertColor = "rgba(10, 10, 10, 1)";
-var edgeColor = "rgba(200, 0, 0, 1)";
+var edgeColor = "rgba(100, 70, 70, 1)";
 var faceColor = "rgba(180, 180, 255, .3)";
 var textColor = "rgba(0, 0, 0, 1)";
-var vertSize = 6; //Make it even: at small scales will look better
-var rotationSpeed = 100; //Smaller = faster
+var vertSize = 2; //Make it even: at small scales will look better
+var rotationSpeed = 100; //Smaller = faster. 100 is a good speed
 
 /********************************************************************
  * Parameters used to scale the measures in the .obj file. Can be   *
@@ -30,6 +30,13 @@ var mDown = false;
  ********************************************************************/ 
 var canvas;
 var ctx;
+
+/********************************************************************
+ * Global variables containing the number of elements.              *
+ ********************************************************************/ 
+var totalVert;
+var totalEdge;//TODO: I dont know how to calculate
+var totalFace
 
 /********************************************************************
  * Arrays containing the vertices, edges and faces.                 *
@@ -121,14 +128,15 @@ function readVerts(text){
 		line = text.substring(text.indexOf("v "), text.indexOf("\n", text.indexOf("v ")));
 		vert[i] = new Array(3);
 		line = line.substring(2);
-		vert[i][0] = Math.round(scale * Math.round(line.substring(0, line.indexOf(" "))));
+		vert[i][0] = Math.round(scale * line.substring(0, line.indexOf(" ")));
 		line = line.substring(line.indexOf(" ") + 1);
-		vert[i][1] = Math.round(scale * Math.round(line.substring(0, line.indexOf(" "))));
+		vert[i][1] = Math.round(scale * line.substring(0, line.indexOf(" ")));
 		line = line.substring(line.indexOf(" ") + 1);
-		vert[i][2] = Math.round(scale * Math.round(line));
+		vert[i][2] = Math.round(scale * line);
 		i = i + 1;
 		text = text.substring(text.indexOf("v ") + 1)
-	}	
+	}
+	totalVert = vert.length;
 }
 
 /********************************************************************
@@ -158,6 +166,7 @@ function readFaces(text){
 		i = i + 1;
 		text = text.substring(text.indexOf("f ") + 1)	
 	}
+	totalFace = face.length;
 }
 
 /********************************************************************
@@ -171,6 +180,7 @@ function drawVerts(){
 	var y;
 	var w;
 	var h;
+	//console.log("Drawing " + vert.length + " vertices")
 	for (var i = 0; i < vert.length; i++) {
 		x = vert[i][0] - (vertSize / 2);
 		w = vertSize;
@@ -187,8 +197,9 @@ function drawVerts(){
  * @return: nothing                                                 *
  ********************************************************************/
 function drawFaces(){
+	//console.log("Drawing " + face.length + " faces")
 	for (var i = 0; i < face.length; i++){
-		ctx.fillStyle = edgeColor;
+		ctx.strokeStyle = edgeColor;
 		ctx.beginPath();
 		ctx.moveTo(vert[face[i][0]][0], vert[face[i][0]][1]);
 		for (var j = 1; j < face[i].length; j++) {
@@ -214,8 +225,8 @@ function writeCredits(){
 	ctx.fillStyle = textColor;
 	ctx.font = "12px Arial";
 	var h = canvas.height / 2 - 14;
-	var w = canvas.width / 2 - 45;
-	ctx.fillText("ObJS", w, h);
+	var w = 10 - (canvas.height / 2);
+	ctx.fillText("ObJS   " + totalVert + " vertizes   " + totalFace + " faces", w, h);
 }
 
 /********************************************************************
