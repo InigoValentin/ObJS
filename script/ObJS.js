@@ -15,6 +15,9 @@ var obj;
 var vert;
 var face;
 
+var pX = null;
+var pY = null;
+
 function loadModel(val){
 	//Get file
 	xmlhttp = new XMLHttpRequest();
@@ -83,17 +86,12 @@ function drawVerts(){
 	var y;
 	var w;
 	var h;
-	//console.log("Drawing " + vert.length + " verts");
 	for (var i = 0; i < vert.length; i++) {
 		x = vert[i][0] - (vertSize / 2);
 		w = vertSize;
 		y = vert[i][1] - (vertSize / 2);
 		h = vertSize;
-		//console.log("vert[" + i + "] x: " + vert[i][0] + " y: " + vert[i][1] + " z: " + vert[i][2])
-		//ctx.arc(vert[i][0], vert[i][1], vertSize, 0, 2 * Math.PI, false);
-		//console.log(x + ", " + y + ", " + w + ", " + h)
 		ctx.fillRect(x, y, w, h);
-		//console.log("Drawed vert " + i);
 	}
 }
 
@@ -103,7 +101,8 @@ function drawFaces(){
 		ctx.beginPath();
 		ctx.moveTo(vert[face[i][0]][0], vert[face[i][0]][1]);
 		for (var j = 1; j < face[i].length; j++) {
-			ctx.lineTo(vert[face[i][j]][0], vert[face[i][j]][1]);	
+			ctx.lineTo(vert[face[i][j]][0], vert[face[i][j]][1]);
+			ctx.stroke();
 		}
 		ctx.closePath();
 		ctx.fillStyle = faceColor;
@@ -111,20 +110,48 @@ function drawFaces(){
 	}
 }
 
+function rotateY(theta) {
+	var sin_t = Math.sin(theta / 100);
+	var cos_t = Math.cos(theta / 100);
+	
+	for (var i=0; i<vert.length; i++) {
+		var x = vert[i][0];
+		var z = vert[i][2];
+		vert[i][0] = x * cos_t - z * sin_t;
+		vert[i][2] = z * cos_t + x * sin_t;
+	}
+};
+
+function rotateX(theta) {
+	var sin_t = Math.sin(theta / 100);
+	var cos_t = Math.cos(theta / 100);
+	
+	for (var i=0; i<vert.length; i++) {
+		var y = vert[i][1];
+		var z = vert[i][2];
+		vert[i][1] = y * cos_t - z * sin_t;
+		vert[i][2] = z * cos_t + y * sin_t;
+	}
+};
+
 function initCanvas(){
 	if (canvas == null){
-		//console.log("INIT");
 		canvas = document.getElementById("ObJSCanvas");
 		ctx = canvas.getContext("2d");
 		ctx.translate(canvas.width / 2, canvas.height / 2);
 		
 		canvas.onmousedown = function(e){
 			
+			pX = e.offsetX==undefined?e.layerX:e.offsetX;
+			pY = e.offsetY==undefined?e.layerY:e.offsetY;
 			mDown = true;
 		}
 			
 		canvas.onmouseup = function(e){
 			if(mDown) mouseClick(e);
+			
+			pX = null;
+			pY = null;
 			
 			mDown = false;
 		}
@@ -132,6 +159,18 @@ function initCanvas(){
 		canvas.onmousemove = function(e){
 			if(!mDown) return;
 			
+			var x = e.offsetX==undefined?e.layerX:e.offsetX;
+			var y = e.offsetY==undefined?e.layerY:e.offsetY;
+			
+			rotateY(x - pX);
+			rotateX(y - pY);
+			
+			pX = x;
+			pY = y;
+			
+			initCanvas();
+			drawFaces();
+			drawVerts();
 			return false;
 		}
 	}
@@ -147,7 +186,6 @@ function mouseClick(){
 }
 
 function writeCredits(){
-	//console.log("CREDITS");
 	ctx.fillStyle = textColor;
 	ctx.font = "12px Arial";
 	var h = canvas.height / 2 - 14;
