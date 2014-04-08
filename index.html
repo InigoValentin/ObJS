@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="text/html; charset=windows-1252" http-equiv="content-type"/>
+		<title>ObJS</title>
+		<!--Script files -->
+		<script type="text/javascript" src="script/ObJS.js"></script>
+		<!-- CSS files -->
+	</head>
+	<body>
+		<select id="objSelector" name="objSelector" onChange="loadModel(this)">
+			<option value="cube" selected="selected">Cube</option>
+			<option value="2cube">Two Cubes</option>
+			<option value="complex">Complex Object</option>
+			<option value="2complex">Two Complex Objects</option>
+		</select>
+		<br/>
+		<canvas id="ObJSCanvas" width="400" height="400">
+			Your browser does not support the HTML5 canvas tag.
+		</canvas>
+	</body>
+</html>
