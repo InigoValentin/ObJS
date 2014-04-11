@@ -398,6 +398,28 @@ function initCanvas(){
 		draw();
 		return false;
 	}
+	
+	canvas.addEventListener('mousewheel',function(event){
+		if (event.wheelDelta > 0)
+			zoom("-");
+		else 
+			zoom("+");
+		return false;
+	}, false);
+}
+
+/********************************************************************
+ * Function that changes the scale variable, witch results in a     *
+ * zoom in or zoom out effect.                                      *
+ * #parameters: none                                                *
+ * #return: nothing                                                 *
+ ********************************************************************/
+function zoom(dir){
+	if (dir == "+")
+		scale = Math.round(scale * 1.2);
+	if (dir == "-")
+		scale = Math.round(scale * 0.8);
+	draw();
 }
 
 /********************************************************************
