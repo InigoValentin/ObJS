@@ -20,11 +20,9 @@ ObJS
 ### How to use ###
 
 Just include the *ObJS.js* in your project, and call
-
 ```javascript
 loadModel(file, canvas);
 ```
-
 Where 
 * *file* is a character string with the path to the file, relative or absolute.
 * *canvas* is the canvas element in witch the model will be represented. If this parameter is not specified, the script will try to use a canvas called *ObJSCanvas*.
@@ -36,11 +34,9 @@ Where
 You can change parameters such as the elements to draw, their color, transparency, rotation speed, zoom speed... in the script, but much of them can be changed on runtime, so you can use controls.
 
 ##### Select which elements to draw #####
-
 ```javascript
 drawElement(keyword, on);
 ```
-
 Where
 * *keyword* is a character string indicating witch element you want or don't want to be drawn. Possible values are
 	- *'backg'*, for the background.
@@ -50,11 +46,9 @@ Where
 * *on* is a Boolean value, indicating if the element is to be drawn or not.
 
 ##### Select color for elements #####
-
 ```javascript
 colorElement(keyword, color);
 ```
-
 Where
 * *keyword* is a character string indicating witch element you want to colorize. Possible values are
 	- *'backg'*, for the background.
@@ -64,10 +58,8 @@ Where
 * *color* is a character string with the HEX codeo for the desired color, for example *'#ff0000'* for red.
 
 ##### Select face transparency #####
-
 ```javascript
 setAlpha(percent);
 ```
-
 Where
 * *percent* is an integer, between 0 and 100, indicating the level of transparency you want to apply to the faces.
