@@ -17,7 +17,7 @@ var rotationSpeed = 100; //Smaller = faster. 100 is a good speed
  * dimensions, so the bigest dimension from the object can fit in   *
  * the smallest dimension of the canvas.                            *
  ********************************************************************/
-var scale = 50;
+var scale;// = 50;
 
 /********************************************************************
  * Global variable to determine if the mouse button is being holded *
@@ -94,6 +94,8 @@ function loadModel(val){
 	xmlhttp.send();
 	var fileContent = xmlhttp.responseText;
 	initArrays();
+	if (canvas == null)
+		initCanvas();
 	readVerts(fileContent);
 	readFaces(fileContent);
 	draw();
@@ -124,19 +126,44 @@ function initArrays(){
 function readVerts(text){
 	var line;
 	var i = 0;
+	var max = 0;
+	var dist;
 	while (text.indexOf("v ") != -1){
 		line = text.substring(text.indexOf("v "), text.indexOf("\n", text.indexOf("v ")));
 		vert[i] = new Array(3);
 		line = line.substring(2);
-		vert[i][0] = Math.round(scale * line.substring(0, line.indexOf(" ")));
+		vert[i][0] = line.substring(0, line.indexOf(" "));
 		line = line.substring(line.indexOf(" ") + 1);
-		vert[i][1] = Math.round(scale * line.substring(0, line.indexOf(" ")));
+		vert[i][1] = line.substring(0, line.indexOf(" "));
 		line = line.substring(line.indexOf(" ") + 1);
-		vert[i][2] = Math.round(scale * line);
-		i = i + 1;
+		vert[i][2] = line;
 		text = text.substring(text.indexOf("v ") + 1)
+		dist = Math.sqrt(vert[i][0] * vert[i][0] + vert[i][1] * vert[i][1] + vert[i][2] * vert[i][2]);
+		if (dist > max)
+			max = dist;
+		i = i + 1;
 	}
+	scale = calculateScale(max);
 	totalVert = vert.length;
+}
+
+/********************************************************************
+ * Function that automatically calculates the best scale for the    *
+ * modelermined number of elements, containing the verices that     *
+ * form a face, so the bigest dimension from the object can fit in  *
+ * the smallest dimension of the canvas.                            *
+ * @parameters:                                                     *
+ *   text (int): the farthest vertex, from the center.              *
+ * @return: (int) The scale to be aplied.                           *
+ ********************************************************************/ 
+function calculateScale(max){
+	var dim;
+	if (canvas.width < canvas.height)
+		dim = canvas.width;
+	else
+		dim = canvas.height;
+	var sc = Math.round((0.95 * dim) / (2 * max));
+	return sc;
 }
 
 /********************************************************************
@@ -182,9 +209,9 @@ function drawVerts(){
 	var h;
 	//console.log("Drawing " + vert.length + " vertices")
 	for (var i = 0; i < vert.length; i++) {
-		x = vert[i][0] - (vertSize / 2);
+		x = scale * vert[i][0] - (vertSize / 2);
 		w = vertSize;
-		y = vert[i][1] - (vertSize / 2);
+		y = scale * vert[i][1] - (vertSize / 2);
 		h = vertSize;
 		ctx.fillRect(x, y, w, h);
 	}
@@ -201,9 +228,9 @@ function drawFaces(){
 	for (var i = 0; i < face.length; i++){
 		ctx.strokeStyle = edgeColor;
 		ctx.beginPath();
-		ctx.moveTo(vert[face[i][0]][0], vert[face[i][0]][1]);
+		ctx.moveTo(scale * vert[face[i][0]][0], scale * vert[face[i][0]][1]);
 		for (var j = 1; j < face[i].length; j++) {
-			ctx.lineTo(vert[face[i][j]][0], vert[face[i][j]][1]);
+			ctx.lineTo(scale * vert[face[i][j]][0], scale * vert[face[i][j]][1]);
 			if(dEdges)
 				ctx.stroke();
 				
@@ -235,7 +262,7 @@ function writeCredits(){
  * @return: nothing                                                 *
  ********************************************************************/
 function draw(){
-	initCanvas();
+	clearCanvas();
 	if (dFaces || dEdges)
 		drawFaces();
 	if (dVerts)
@@ -276,48 +303,52 @@ function rotateX(des) {
 };
 
 /********************************************************************
- * Function that gets the canvas ready to be drawn. It initializes  *
- * the canvas and ctx variables if they arent already, seting mouse *
- * events for them, clears the canvas and sets the background.      *
+ * Function that initializes the canvas, assignin it to the HTML    *
+ * element, and set the required mouse events.                      *
  * @parameters: none                                                *
  * @return: nothing                                                 *
  ********************************************************************/
 function initCanvas(){
-	if (canvas == null){
-		canvas = document.getElementById("ObJSCanvas");
-		ctx = canvas.getContext("2d");
-		ctx.translate(canvas.width / 2, canvas.height / 2);
-		
-		canvas.onmousedown = function(e){
-			pX = e.offsetX==undefined?e.layerX:e.offsetX;
-			pY = e.offsetY==undefined?e.layerY:e.offsetY;
-			mDown = true;
-		}
-			
-		canvas.onmouseup = function(e){
-			if(mDown) 
-				mouseClick(e);
-			pX = null;
-			pY = null;
-			mDown = false;
-		}
-			
-		canvas.onmousemove = function(e){
-			if(!mDown) 
-				return;
-			var x = e.offsetX==undefined?e.layerX:e.offsetX;
-			var y = e.offsetY==undefined?e.layerY:e.offsetY;
-			rotateY(x - pX);
-			rotateX(y - pY);
-			pX = x;
-			pY = y;
-			draw();
-			return false;
-		}
-	}
+	canvas = document.getElementById("ObJSCanvas");
+	ctx = canvas.getContext("2d");
+	ctx.translate(canvas.width / 2, canvas.height / 2);
 	
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	canvas.onmousedown = function(e){
+		pX = e.offsetX==undefined?e.layerX:e.offsetX;
+		pY = e.offsetY==undefined?e.layerY:e.offsetY;
+		mDown = true;
+	}
+		
+	canvas.onmouseup = function(e){
+		if(mDown) 
+			mouseClick(e);
+		pX = null;
+		pY = null;
+		mDown = false;
+	}
+		
+	canvas.onmousemove = function(e){
+		if(!mDown) 
+			return;
+		var x = e.offsetX==undefined?e.layerX:e.offsetX;
+		var y = e.offsetY==undefined?e.layerY:e.offsetY;
+		rotateY(x - pX);
+		rotateX(y - pY);
+		pX = x;
+		pY = y;
+		draw();
+		return false;
+	}
+}
 
+/********************************************************************
+ * Function that clears the canvas and gets it ready to draw on it. *
+ * @parameters: none                                                *
+ * @return: nothing                                                 *
+ ********************************************************************/
+function clearCanvas(){
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	
 	ctx.fillStyle = backColor;
 	ctx.fillRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
 }
