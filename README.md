@@ -19,13 +19,47 @@ ObJS
 
 ### How to use ###
 
-Just include the *ObJS.js* in your project, and call
+Just include the *ObJS.js* in your project, create a ObJS object, and initalize its canvas.
 ```javascript
-loadModel(file, canvas);
+myObJS = new ObJS();
+myObJS.initCanvas(canvas);
 ```
 Where 
-* *file* is a character string with the path to the file, relative or absolute.
 * *canvas* is the canvas element in witch the model will be represented. If this parameter is not specified, the script will try to use a canvas called *ObJSCanvas*.
+
+Then you can load any obj model by calling
+```javascript
+myObJS.load(file);
+```
+Where
+* *file* is a character string with the path to the file, relative or absolute.
+
+
+If you want to clear the canvas, just call
+```javascript
+myObJS.clear();
+```
+Note that the canvas is automatically cleared when a new object is loaded.
+
+
+
+### Transformations ###
+
+The model can be rotated and zoomed in and out with the mouse, but it can also be done programmatically.
+
+To rotate the object, just call
+```javascript
+myObJS.rotateX(ang); //Rotate along the X edge
+myObJS.rotateY(ang); //Rotate along the Y edge
+```
+Where
+* *ang* (integer) is not the exact angles to rotate, just a internal measure.
+
+To zoom in or out the object, call the method
+```javascript
+myObJS.zoom("+"); //Zoom in
+myObJS.zoom("-"); //Zoom out
+```
 
 
 
