@@ -16,6 +16,7 @@
 					</canvas>
 				</td>
 				<td>
+					Choose a model:
 					<select id="objSelector" name="objSelector" onChange="loadModel(this)">
 						<option value="cube" selected="selected">Cube</option>
 						<option value="sphere">Sphere</option>
@@ -23,12 +24,15 @@
 						<option value="bolt">Bolt</option>
 						<option value="multiple">Multiple Objects</option>
 					</select>
+					<br/><br/><br/>
+					<pre><input type="checkbox" name="drawElement" value="backg" checked onChange="drawElement('backg', this.checked);"/>Background	<input type="color" id="colorBackg" value="#C8C8C8" onChange="colorElement('backg', this.value);"/></pre>
 					<br/>
-					<input type="checkbox" name="drawElement" value="verts" checked onChange="drawElement('verts', this.checked);">Vertices
+					<pre><input type="checkbox" name="drawElement" value="verts" checked onChange="drawElement('verts', this.checked);"/>Vertices	<input type="color" id="colorVerts" value="#0A0A0A" onChange="colorElement('verts', this.value);"/></pre>
 					<br/>
-					<input type="checkbox" name="drawElement" value="edges" checked onChange="drawElement('edges', this.checked);">Edges
+					<pre><input type="checkbox" name="drawElement" value="edges" checked onChange="drawElement('edges', this.checked);"/>Edges		<input type="color" id="colorEdges" value="#644646" onChange="colorElement('edges', this.value);"/></pre>
 					<br/>
-					<input type="checkbox" name="drawElement" value="faces" checked onChange="drawElement('faces', this.checked);">Faces
+					<pre><input type="checkbox" name="drawElement" value="faces" checked onSlide="drawElement('faces', this.checked);"/>Faces		<input type="color" id="colorFaces" value="#B4B4FF" onChange="colorElement('faces', this.value);"/></pre>
+					<pre>		Alpha:<br/>		0% <input id="slide" type="range" min="0" max="100" step="1" value="60" onInput="setAlpha(this.value);" onChange="setAlpha(this.value);"/>100%</pre>
 				</td>
 			</tr>
 		</table>

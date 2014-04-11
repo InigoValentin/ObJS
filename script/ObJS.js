@@ -6,18 +6,16 @@ var backColor = "rgba(200, 200, 200, 1)";
 var vertColor = "rgba(10, 10, 10, 1)";
 var edgeColor = "rgba(100, 70, 70, 1)";
 var faceColor = "rgba(180, 180, 255, .6)";
+var faceAlpha = .6;
 var textColor = "rgba(0, 0, 0, 1)";
 var vertSize = 4; //Make it even: at small scales will look better
 var rotationSpeed = 100; //Smaller = faster. 100 is a good speed
 
 /********************************************************************
  * Parameters used to scale the measures in the .obj file. Can be   *
- * integer or float, greater than 0                                 *
- * TODO: Must be automatically calculated according to the canvas   *
- * dimensions, so the bigest dimension from the object can fit in   *
- * the smallest dimension of the canvas.                            *
+ * integer or float, greater than 0. 50 is a good default.          *
  ********************************************************************/
-var scale;// = 50;
+var scale;
 
 /********************************************************************
  * Global variable to determine if the mouse button is being holded *
@@ -35,7 +33,7 @@ var ctx;
  * Global variables containing the number of elements.              *
  ********************************************************************/ 
 var totalVert;
-var totalEdge;//TODO: I dont know how to calculate
+var totalEdge;//TODO: I dont know how to calculate. And I dont need it
 var totalFace
 
 /********************************************************************
@@ -46,16 +44,12 @@ var vert;
 var face;
 
 /********************************************************************
- * Array containing the order the veres and faces.                 *
- ********************************************************************/
-var order;
-
-/********************************************************************
  * Booleans to determine wich elements are to draw.                 *
  ********************************************************************/ 
 var dVerts = true;
 var dEdges = true;
 var dFaces = true;
+var dBackg = true;
 
 /********************************************************************
  * Global variables that will contain the position of the mouse in  *
@@ -82,7 +76,64 @@ function drawElement(name, value){
 		case "faces":
 			dFaces = value;
 			break;
+		case "backg":
+			dBackg = value;
+			break;
 	}
+	draw();
+}
+/********************************************************************
+ * Function that turns a hex color code in RGB.                     *
+ * stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb    *
+ * #parameters:                                                     *
+ *   hex (string): color code, for example "#33ff99"                *
+ * #return: (Array) r, g, b, with their correspondent color.        *
+ ********************************************************************/ 
+function hexToRgb(hex) {
+	var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+	return result ? {
+		r: parseInt(result[1], 16),
+		g: parseInt(result[2], 16),
+		b: parseInt(result[3], 16)
+	} : null;
+}
+
+/********************************************************************
+ * Function switching the color of the elements.                    *
+ * #parameters:                                                     *
+ *   name (string): key to the element to colorize.                 *
+ *   value (boolean): indicating if the element is to be drawn.     *
+ * #return: nothing                                                 *
+ ********************************************************************/ 
+function colorElement(name, value){
+	var color = hexToRgb(value)
+	var str = "rgba(" + color.r + ", " + color.g + ", "  + color.b + ", 1)"
+	switch (name){
+		case "backg":
+			backColor = "rgba(" + color.r + ", " + color.g + ", "  + color.b + ", 1)";
+			break;
+		case "verts":
+			vertColor = "rgba(" + color.r + ", " + color.g + ", "  + color.b + ", 1)";
+			break;
+		case "edges":
+			edgeColor = "rgba(" + color.r + ", " + color.g + ", "  + color.b + ", 1)";
+			break;
+		case "faces":
+			faceColor = "rgba(" + color.r + ", " + color.g + ", "  + color.b + ", " + faceAlpha + ")";
+			break;
+	}
+	draw();
+}
+
+/********************************************************************
+ * Function switching the alpha value of the faces.                 *
+ * #parameters:                                                     *
+ *   percent (int): Value (0-100) of alpha. Must be processed (0-1) *
+ * #return: nothing                                                 *
+ ********************************************************************/ 
+function setAlpha(percent){
+	faceAlpha = percent / 100;
+	faceColor = faceColor.substring(0, faceColor.lastIndexOf(",") + 2) + faceAlpha + ")";
 	draw();
 }
 
@@ -356,8 +407,10 @@ function initCanvas(){
  ********************************************************************/
 function clearCanvas(){
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	
-	ctx.fillStyle = backColor;
+	if (dBackg)
+		ctx.fillStyle = backColor;
+	else
+		ctx.fillStyle = "#ffffff";
 	ctx.fillRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
 }
 
