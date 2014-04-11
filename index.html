@@ -7,7 +7,7 @@
 		<script type="text/javascript" src="script/ObJS.js"></script>
 		<!-- CSS files -->
 	</head>
-	<body onload="loadModel(document.getElementById('objSelector'));">
+	<body onload="loadModel(document.getElementById('objSelector').value);">
 		<table>
 			<tr>
 				<td>
@@ -17,12 +17,12 @@
 				</td>
 				<td>
 					Choose a model:
-					<select id="objSelector" name="objSelector" onChange="loadModel(this)">
-						<option value="cube" selected="selected">Cube</option>
-						<option value="sphere">Sphere</option>
-						<option value="monkey">Monkey</option>
-						<option value="bolt">Bolt</option>
-						<option value="multiple">Multiple Objects</option>
+					<select id="objSelector" name="objSelector" onChange="loadModel(this.value)">
+						<option value="obj/cube.obj" selected="selected">Cube</option>
+						<option value="obj/sphere.obj">Sphere</option>
+						<option value="obj/monkey.obj">Monkey</option>
+						<option value="obj/bolt.obj">Bolt</option>
+						<option value="obj/multiple.obj">Multiple Objects</option>
 					</select>
 					<br/><br/><br/>
 					<pre><input type="checkbox" name="drawElement" value="backg" checked onChange="drawElement('backg', this.checked);"/>Background	<input type="color" id="colorBackg" value="#C8C8C8" onChange="colorElement('backg', this.value);"/></pre>

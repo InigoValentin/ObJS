@@ -138,20 +138,25 @@ function setAlpha(percent){
 }
 
 /********************************************************************
- * Main function, called every time a file is to be loaded.         *
+ * Main functions, called every time a file is to be loaded.        *
  * #parameters:                                                     *
  *   val (string): name of the file, without path or extension.     *
+ *   canv (canvas): canvas to use (Optional)
  * #return: nothing                                                 *
- ********************************************************************/ 
+ ********************************************************************/
 function loadModel(val){
+	loadModel(val, null);
+}
+
+function loadModel(file, canv){
 	//Get file
 	xmlhttp = new XMLHttpRequest();
-	xmlhttp.open("GET","/obj/" + val.value + ".obj", false);
+	xmlhttp.open("GET",file, false);
 	xmlhttp.send();
 	var fileContent = xmlhttp.responseText;
 	initArrays();
 	if (canvas == null)
-		initCanvas();
+		initCanvas(canv);
 	readVerts(fileContent);
 	readFaces(fileContent);
 	draw();
@@ -367,8 +372,11 @@ function rotateX(des) {
  * #parameters: none                                                *
  * #return: nothing                                                 *
  ********************************************************************/
-function initCanvas(){
-	canvas = document.getElementById("ObJSCanvas");
+function initCanvas(canv){
+	if (canv!= null)
+		canvas = canv;
+	else
+		canvas = document.getElementById("ObJSCanvas");
 	ctx = canvas.getContext("2d");
 	ctx.translate(canvas.width / 2, canvas.height / 2);
 	
