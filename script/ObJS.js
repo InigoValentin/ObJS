@@ -10,6 +10,7 @@ var faceAlpha = .6;
 var textColor = "rgba(0, 0, 0, 1)";
 var vertSize = 4; //Make it even: at small scales will look better
 var rotationSpeed = 100; //Smaller = faster. 100 is a good speed
+var zoomSpeed = 0.2; //0-1. 0.2 or 0.3 are good speeds
 
 /********************************************************************
  * Parameters used to scale the measures in the .obj file. Can be   *
@@ -424,9 +425,9 @@ function initCanvas(canv){
  ********************************************************************/
 function zoom(dir){
 	if (dir == "+")
-		scale = Math.round(scale * 1.2);
+		scale = Math.round(scale * (1 + zoomSpeed));
 	if (dir == "-")
-		scale = Math.round(scale * 0.8);
+		scale = Math.round(scale * (1 - zoomSpeed));
 	draw();
 }
 
