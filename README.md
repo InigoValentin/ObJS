@@ -21,9 +21,9 @@ ObJS
 
 Just include the *ObJS.js* in your project, and call
 
-...javascript
+```javascript
 loadModel(file, canvas);
-...
+```
 
 Where 
 * *file* is a character string with the path to the file, relative or absolute.
@@ -37,9 +37,9 @@ You can change parameters such as the elements to draw, their color, transparenc
 
 ##### Select which elements to draw #####
 
-...javascript
+```javascript
 drawElement(keyword, on);
-...
+```
 
 Where
 * *keyword* is a character string indicating witch element you want or don't want to be drawn. Possible values are
@@ -51,9 +51,9 @@ Where
 
 ##### Select color for elements #####
 
-...javascript
+```javascript
 colorElement(keyword, color);
-...
+```
 
 Where
 * *keyword* is a character string indicating witch element you want to colorize. Possible values are
@@ -65,9 +65,9 @@ Where
 
 ##### Select face transparency #####
 
-...javascript
+```javascript
 setAlpha(percent);
-...
+```
 
 Where
 * *percent* is an integer, between 0 and 100, indicating the level of transparency you want to apply to the faces.
