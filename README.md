@@ -3,7 +3,7 @@ ObJS
 
 ## A .obj files viewer for HTML5 written in JavaScript ###
 
-<a href="http://imgur.com/S2p04Pr"><img src="http://i.imgur.com/S2p04Pr.png" title="ObJS - bolt" /></a>
+<a href="http://imgur.com/kT7mGoK"><img src="http://i.imgur.com/kT7mGoK.png" title="ObJS - Bolt" /></a>
 
 
 
