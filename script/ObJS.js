@@ -5,9 +5,9 @@
 var backColor = "rgba(200, 200, 200, 1)";
 var vertColor = "rgba(10, 10, 10, 1)";
 var edgeColor = "rgba(100, 70, 70, 1)";
-var faceColor = "rgba(180, 180, 255, .3)";
+var faceColor = "rgba(180, 180, 255, .6)";
 var textColor = "rgba(0, 0, 0, 1)";
-var vertSize = 2; //Make it even: at small scales will look better
+var vertSize = 4; //Make it even: at small scales will look better
 var rotationSpeed = 100; //Smaller = faster. 100 is a good speed
 
 /********************************************************************
@@ -46,6 +46,11 @@ var vert;
 var face;
 
 /********************************************************************
+ * Array containing the order the veres and faces.                 *
+ ********************************************************************/
+var order;
+
+/********************************************************************
  * Booleans to determine wich elements are to draw.                 *
  ********************************************************************/ 
 var dVerts = true;
@@ -61,10 +66,10 @@ var pY = null;
 
 /********************************************************************
  * Function switching the elements to draw (dVerts, dEdges, dFaces) *
- * @parameters:                                                     *
+ * #parameters:                                                     *
  *   name (string): key to the element to draw.                     *
  *   value (boolean): indicating if the element is to be drawn.     *
- * @return: nothing                                                 *
+ * #return: nothing                                                 *
  ********************************************************************/ 
 function drawElement(name, value){
 	switch (name){
@@ -83,9 +88,9 @@ function drawElement(name, value){
 
 /********************************************************************
  * Main function, called every time a file is to be loaded.         *
- * @parameters:                                                     *
+ * #parameters:                                                     *
  *   val (string): name of the file, without path or extension.     *
- * @return: nothing                                                 *
+ * #return: nothing                                                 *
  ********************************************************************/ 
 function loadModel(val){
 	//Get file
@@ -104,8 +109,8 @@ function loadModel(val){
 /********************************************************************
  * Function initializing the arrays obj, vert and face as empty     *
  * arrays.                                                          *
- * @parameters: none                                                *
- * @return: nothing                                                 *
+ * #parameters: none                                                *
+ * #return: nothing                                                 *
  ********************************************************************/ 
 function initArrays(){
 	obj =  null;
@@ -119,9 +124,9 @@ function initArrays(){
 /********************************************************************
  * Function tat populates the vert[] array with and array of three  *
  * elements, containig the coordinates, with the scale applied.     *
- * @parameters:                                                     *
+ * #parameters:                                                     *
  *   text (string): the content of the obj file.                    *
- * @return: nothing                                                 *
+ * #return: nothing                                                 *
  ********************************************************************/ 
 function readVerts(text){
 	var line;
@@ -152,9 +157,9 @@ function readVerts(text){
  * modelermined number of elements, containing the verices that     *
  * form a face, so the bigest dimension from the object can fit in  *
  * the smallest dimension of the canvas.                            *
- * @parameters:                                                     *
+ * #parameters:                                                     *
  *   text (int): the farthest vertex, from the center.              *
- * @return: (int) The scale to be aplied.                           *
+ * #return: (int) The scale to be aplied.                           *
  ********************************************************************/ 
 function calculateScale(max){
 	var dim;
@@ -170,9 +175,9 @@ function calculateScale(max){
  * Function that populates the face[] array with and array of an    *
  * undetermined number of elements, containing the verices that     *
  * form a face.                                                     *
- * @parameters:                                                     *
+ * #parameters:                                                     *
  *   text (string): the content of the obj file.                    *
- * @return: nothing                                                 *
+ * #return: nothing                                                 *
  ********************************************************************/ 
 function readFaces(text){
 	var finish = false;
@@ -197,56 +202,40 @@ function readFaces(text){
 }
 
 /********************************************************************
- * Function that draws the vertizes in the canvas.                  *
- * @parameters: none                                                *
- * @return: nothing                                                 *
+ * Function that compares the average Z coordinate of two faces.    *
+ * Must be used when sorting the face array.                        *
+ * #parameters:                                                     *
+ *   a (Array): One face.                                           *
+ *   b (Array): The other face.                                     *
+ * #return: (int) -1, 1 or 0.                                       *
  ********************************************************************/ 
-function drawVerts(){
-	ctx.fillStyle = vertColor;
-	var x;
-	var y;
-	var w;
-	var h;
-	//console.log("Drawing " + vert.length + " vertices")
-	for (var i = 0; i < vert.length; i++) {
-		x = scale * vert[i][0] - (vertSize / 2);
-		w = vertSize;
-		y = scale * vert[i][1] - (vertSize / 2);
-		h = vertSize;
-		ctx.fillRect(x, y, w, h);
+function faceComparator(a,b){
+	var aZ;
+	var bZ;
+	var i = 0;
+	var sum = 0.0;
+	while (i < a.length){
+		sum = sum + parseFloat(vert[a[i]][2]);
+		i = i + 1;
 	}
-}
-
-/********************************************************************
- * Function that draws the edges and the faces in the canvas, if    *
- * they are to be drawn according to dEdges and dFaces.             *
- * @parameters: none                                                *
- * @return: nothing                                                 *
- ********************************************************************/
-function drawFaces(){
-	//console.log("Drawing " + face.length + " faces")
-	for (var i = 0; i < face.length; i++){
-		ctx.strokeStyle = edgeColor;
-		ctx.beginPath();
-		ctx.moveTo(scale * vert[face[i][0]][0], scale * vert[face[i][0]][1]);
-		for (var j = 1; j < face[i].length; j++) {
-			ctx.lineTo(scale * vert[face[i][j]][0], scale * vert[face[i][j]][1]);
-			if(dEdges)
-				ctx.stroke();
-				
-		}
-		ctx.closePath();
-		ctx.fillStyle = faceColor;
-		if(dFaces)
-			ctx.fill();
+	aZ = sum / parseFloat(i);
+	i = 0;
+	sum = 0;
+	while (i < b.length){
+		sum = sum + parseFloat(1 * vert[b[i]][2]);
+		i = i + 1;
 	}
+	bZ = sum / parseFloat(i);
+	if (aZ < bZ) return -1;
+	if (aZ > bZ) return 1;
+	return 0;
 }
 
 /********************************************************************
  * Function that writes text in the corner of the canvas. Must be   *
  * called when everithing has been drawn.                           *
- * @parameters: none                                                *
- * @return: nothing                                                 *
+ * #parameters: none                                                *
+ * #return: nothing                                                 *
  ********************************************************************/
 function writeCredits(){
 	ctx.fillStyle = textColor;
@@ -257,25 +246,44 @@ function writeCredits(){
 }
 
 /********************************************************************
- * Function that calls every neccesary function to draw the canvas. *
- * @parameters: none                                                *
- * @return: nothing                                                 *
+ * Function that draws th vertizes, faces and edges in the canvas.  *
+ * #parameters: none                                                *
+ * #return: nothing                                                 *
  ********************************************************************/
 function draw(){
+	face = face.sort(faceComparator).reverse();
 	clearCanvas();
-	if (dFaces || dEdges)
-		drawFaces();
-	if (dVerts)
-		drawVerts();
+	for (var i = 0; i < face.length; i++){
+		ctx.strokeStyle = edgeColor;
+		ctx.fillStyle = vertColor;
+		ctx.beginPath();
+		ctx.moveTo(scale * vert[face[i][0]][0], scale * vert[face[i][0]][1]);
+		for (var j = 1; j < face[i].length; j++) {
+			ctx.lineTo(scale * vert[face[i][j]][0], scale * vert[face[i][j]][1]);
+			if(dEdges)
+				ctx.stroke();
+			if(dVerts){
+				var x = scale * vert[face[i][j]][0] - (vertSize / 2);
+				var w = vertSize;
+				var y = scale * vert[face[i][j]][1] - (vertSize / 2);
+				var h = vertSize;
+				ctx.fillRect(x, y, w, h);
+			}
+		}
+		ctx.closePath();
+		ctx.fillStyle = faceColor;
+		if(dFaces)
+			ctx.fill();
+	}
 	writeCredits();
 }
 
 /********************************************************************
  * Function that rotates elements in the canvas along the Y axis,   *
  * calculating the new position for each vertex in the vert array.  *
- * @parameters:                                                     *
+ * #parameters:                                                     *
  *   des (int): mouse displacement from the last frame.             *
- * @return: nothing                                                 *
+ * #return: nothing                                                 *
  ********************************************************************/
 function rotateY(des) {
 	for (var i = 0; i < vert.length; i ++) {
@@ -289,9 +297,9 @@ function rotateY(des) {
 /********************************************************************
  * Function that rotates elements in the canvas along the X axis,   *
  * calculating the new position for each vertex in the vert array.  *
- * @parameters:                                                     *
+ * #parameters:                                                     *
  *   des (int): mouse displacement from the last frame.             *
- * @return: nothing                                                 *
+ * #return: nothing                                                 *
  ********************************************************************/
 function rotateX(des) {
 	for (var i = 0; i < vert.length; i ++) {
@@ -305,8 +313,8 @@ function rotateX(des) {
 /********************************************************************
  * Function that initializes the canvas, assignin it to the HTML    *
  * element, and set the required mouse events.                      *
- * @parameters: none                                                *
- * @return: nothing                                                 *
+ * #parameters: none                                                *
+ * #return: nothing                                                 *
  ********************************************************************/
 function initCanvas(){
 	canvas = document.getElementById("ObJSCanvas");
@@ -343,8 +351,8 @@ function initCanvas(){
 
 /********************************************************************
  * Function that clears the canvas and gets it ready to draw on it. *
- * @parameters: none                                                *
- * @return: nothing                                                 *
+ * #parameters: none                                                *
+ * #return: nothing                                                 *
  ********************************************************************/
 function clearCanvas(){
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -355,8 +363,8 @@ function clearCanvas(){
 
 /********************************************************************
  * TODO: Function used when something in the canvas is clicked.     *
- * @parameters: none                                                *
- * @return: nothing                                                 *
+ * #parameters: none                                                *
+ * #return: nothing                                                 *
  ********************************************************************/
 function mouseClick(){
 }
