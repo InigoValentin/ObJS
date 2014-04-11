@@ -14,6 +14,7 @@ ObJS
 * Choose to draw (or not) vertizes, edges or faces.
 * Change colors of background, vertizes, edges, and faces during runtime.
 * Change face transparency during runtime, so hidden elements are visible.
+* Change zoom and rotation speed during runtime.
 
 
 
@@ -49,17 +50,19 @@ The model can be rotated and zoomed in and out with the mouse, but it can also b
 
 To rotate the object, just call
 ```javascript
-myObJS.rotateX(ang); //Rotate along the X edge
-myObJS.rotateY(ang); //Rotate along the Y edge
+myObJS.rotateX(-1); //Rotate along the X edge to the left
+myObJS.rotateX(1);  //Rotate along the X edge to the right
+myObJS.rotateY(-1); //Rotate along the Y edge to the left
+myObJS.rotateY(1);  //Rotate along the Y edge to the right
 ```
-Where
-* *ang* (integer) is not the exact angles to rotate, just a internal measure.
+Note that the rotation speed can be set (see *Seting rotation speed*).
 
 To zoom in or out the object, call the method
 ```javascript
 myObJS.zoom("+"); //Zoom in
 myObJS.zoom("-"); //Zoom out
 ```
+Note that the zoom speed can be set (see *Seting zoom speed*).
 
 
 
@@ -69,7 +72,7 @@ You can change parameters such as the elements to draw, their color, transparenc
 
 ##### Select which elements to draw #####
 ```javascript
-drawElement(keyword, on);
+myObJS.drawElement(keyword, on);
 ```
 Where
 * *keyword* is a character string indicating witch element you want or don't want to be drawn. Possible values are
@@ -81,7 +84,7 @@ Where
 
 ##### Select color for elements #####
 ```javascript
-colorElement(keyword, color);
+myObJS.colorElement(keyword, color);
 ```
 Where
 * *keyword* is a character string indicating witch element you want to colorize. Possible values are
@@ -93,7 +96,21 @@ Where
 
 ##### Select face transparency #####
 ```javascript
-setAlpha(percent);
+myObJS.setAlpha(percent);
 ```
 Where
 * *percent* is an integer, between 0 and 100, indicating the level of transparency you want to apply to the faces.
+
+##### Set rotation speed #####
+```javascript
+myObJS.setRotationSpeed(value);
+```
+Where
+* *value* is an integer, between 0 and 10. The greater it is, the greater the rotation speed.
+
+##### Set zoom speed #####
+```javascript
+myObJS.setZoomSpeed(value);
+```
+Where
+* *value* is an integer, between 0 and 10. The greater it is, the greater the zoom speed.

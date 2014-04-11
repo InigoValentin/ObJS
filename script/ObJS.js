@@ -16,8 +16,8 @@ function ObJS(file, canv){
 	var faceAlpha = .6;
 	var textColor = "rgba(0, 0, 0, 1)";
 	var vertSize = 4; //Make it even: at small scales will look better
-	var rotationSpeed = 100; //Smaller = faster. 100 is a good speed
-	var zoomSpeed = 0.2; //0-1. 0.2 or 0.3 are good speeds
+	var rotationSpeed = 90; //Smaller = faster. 100 is a good speed
+	var zoomSpeed = 0.161; //0-1. 0.2 or 0.3 are good speeds
 	
 	/********************************************************************
 	 * Variable containing this object, to be refered from nested       *
@@ -86,7 +86,6 @@ function ObJS(file, canv){
 	 * #scope: public                                                   *
 	 ********************************************************************/	
 	this.initCanvas = function(canv){
-		console.log(canvasInitialized);
 		if (!canvasInitialized){
 			if (canv!= null)
 				canvas = canv;
@@ -231,10 +230,31 @@ function ObJS(file, canv){
 	 * #scope: public                                                   *
 	 ********************************************************************/ 
 	this.setAlpha = function(percent){
-		faceAlpha = percent / 100;
-		faceColor = faceColor.substring(0, faceColor.lastIndexOf(",") + 2) + faceAlpha + ")";
-		draw();
+		if (percent >= 0 && percent <= 100){
+			faceAlpha = percent / 100;
+			faceColor = faceColor.substring(0, faceColor.lastIndexOf(",") + 2) + faceAlpha + ")";
+			draw();
+		}
+		else
+			console.log("setAlpha(" + percent + "); ERROR: Only values between 0 and 100 are allowed");
 	};
+	
+	/********************************************************************
+	 * Function switching the rotation speed.                           *
+	 * #parameters:                                                     *
+	 *   percent (int): Value (0-10) of speed.                          *
+	 * #return: nothing                                                 *
+	 * #scope: public                                                   *
+	 ********************************************************************/ 
+	this.setRotationSpeed = function(percent){
+		if (percent >= 0 && percent <= 10){
+			rotationSpeed = Math.round((10 - percent) * 30);
+			if (rotationSpeed == 0)
+				rotationSpeed = 1;
+		}
+		else
+			console.log("setRotationSpeed(" + percent + "); ERROR: Only values between 0 and 10 are allowed");
+	}
 	
 	/********************************************************************
 	 * Function that rotates elements in the canvas along the Y axis,   *
@@ -269,6 +289,20 @@ function ObJS(file, canv){
 			vert[i][2] = z * Math.cos(des / rotationSpeed) + y * Math.sin(des / rotationSpeed);
 		}
 	};
+	
+	/********************************************************************
+	 * Function switching the zoom speede of the faces.                 *
+	 * #parameters:                                                     *
+	 *   percent (int): Value (0-100) of speed.                         *
+	 * #return: nothing                                                 *
+	 * #scope: public                                                   *
+	 ********************************************************************/ 
+	this.setZoomSpeed = function(percent){
+		if (percent >= 0 && percent <= 10)
+			zoomSpeed = ((percent * 0.8) / 10) + 0.01;
+		else
+			console.log("setZoomSpeed(" + percent + "); ERROR: Only values between 0 and 10 are allowed");
+	}
 	
 	/********************************************************************
 	 * Function that changes the scale variable, witch results in a     *

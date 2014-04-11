@@ -32,7 +32,12 @@
 					<pre><input type="checkbox" name="drawElement" value="edges" checked onChange="objs.drawElement('edges', this.checked);"/>Edges		<input type="color" id="colorEdges" value="#644646" onChange="objs.colorElement('edges', this.value);"/></pre>
 					<br/>
 					<pre><input type="checkbox" name="drawElement" value="faces" checked onChange="objs.drawElement('faces', this.checked);"/>Faces		<input type="color" id="colorFaces" value="#B4B4FF" onChange="objs.colorElement('faces', this.value);"/></pre>
-					<pre>		Alpha:<br/>		0% <input id="slide" type="range" min="0" max="100" step="1" value="60" onInput="objs.setAlpha(this.value);" onChange="objs.setAlpha(this.value);"/>100%</pre>
+					<pre>		Alpha:<br/>		0% <input type="range" min="0" max="100" step="1" value="60" onInput="objs.setAlpha(this.value);" onChange="objs.setAlpha(this.value);"/>100%</pre>
+					<br/>
+					Rotation speed:<br/>
+					0% <input type="range" min="0" max="10" step="1" value="3" onInput="objs.setRotationSpeed(this.value);" onChange="objs.setRotationSpeed(this.value);"/>100%
+					<br/>Zoom speed:<br/>
+					0% <input type="range" min="0" max="10" step="1" value="2" onInput="objs.setZoomSpeed(this.value);" onChange="objs.setZoomSpeed(this.value);"/>100%
 				</td>
 			</tr>
 		</table>
