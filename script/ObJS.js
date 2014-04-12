@@ -51,13 +51,13 @@ function ObJS(file, canv){
 	 * Variables containing the number of elements.                     *
 	 ********************************************************************/ 
 	var totalVert;
-	var totalEdge;//TODO: I dont know how to calculate. And I dont need it
+	var totalMaterial;
 	var totalFace
 	
 	/********************************************************************
-	 * Arrays containing the vertices, edges and faces.                 *
+	 * Arrays containing the vertices, faces and materials.             *
 	 ********************************************************************/ 
-	var obj; //Unused
+	var material;
 	var vert;
 	var face;
 	
@@ -68,6 +68,11 @@ function ObJS(file, canv){
 	var dEdges = true;
 	var dFaces = true;
 	var dBackg = true;
+	
+	/********************************************************************
+	 * Booleans to indicate if mtl file should be used.                 *
+	 ********************************************************************/
+	var useMtl = true;
 	
 	/********************************************************************
 	 * Global variables that will contain the position of the mouse in  *
@@ -140,14 +145,20 @@ function ObJS(file, canv){
 	 * #scope: public                                                   *
 	 ********************************************************************/
 	this.load = function(file){
-		//Get file
-		xmlhttp = new XMLHttpRequest();
-		xmlhttp.open("GET",file, false);
+		//Get obj file
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.open("GET", file, false);
 		xmlhttp.send();
 		var fileContent = xmlhttp.responseText;
+		//Get mtl file
+		xmlhttp = new XMLHttpRequest();
+		xmlhttp.open("GET",file.substring(0, file.lastIndexOf(".")) + ".mtl", false);
+		console.log("GET" + file.substring(0, file.lastIndexOf(".")) + ".mtl");
+		xmlhttp.send();
+		var mtlContent = xmlhttp.responseText;
 		initArrays();
-		readVerts(fileContent);
-		readFaces(fileContent);
+		readFile(fileContent);
+		readMtlFile(mtlContent);
 		draw();
 	};
 	
@@ -347,44 +358,106 @@ function ObJS(file, canv){
 	 * #scope: private                                                  *
 	 ********************************************************************/ 
 	var initArrays = function(){
-		obj =  null;
+		material = null;
 		vert = null;
 		face = null;
-		obj =  new Array();
+		material = new Array();
 		vert = new Array();
 		face = new Array();
 	};
 	
 	/********************************************************************
 	 * Function tat populates the vert[] array with and array of three  *
-	 * elements, containig the coordinates, with the scale applied.     *
+	 * elements, containig the coordinates, and the face[] array with   *
+	 * the vertizes forming the face, plus one element indicating the   *
+	 * codename of the material.                                        *
 	 * #parameters:                                                     *
 	 *   text (string): the content of the obj file.                    *
 	 * #return: nothing                                                 *
 	 * #scope: private                                                  *
 	 ********************************************************************/ 
-	var readVerts = function(text){
+	var readFile = function(text){
 		var line;
-		var i = 0;
+		var v = 0;
+		var f = 0;
+		var m = 0;
 		var max = 0;
+		var j;
 		var dist;
-		while (text.indexOf("v ") != -1){
-			line = text.substring(text.indexOf("v "), text.indexOf("\n", text.indexOf("v ")));
-			vert[i] = new Array(3);
-			line = line.substring(2);
-			vert[i][0] = line.substring(0, line.indexOf(" "));
-			line = line.substring(line.indexOf(" ") + 1);
-			vert[i][1] = line.substring(0, line.indexOf(" "));
-			line = line.substring(line.indexOf(" ") + 1);
-			vert[i][2] = line;
-			text = text.substring(text.indexOf("v ") + 1)
-			dist = Math.sqrt(vert[i][0] * vert[i][0] + vert[i][1] * vert[i][1] + vert[i][2] * vert[i][2]);
-			if (dist > max)
-				max = dist;
-			i = i + 1;
+		var mat = "null";
+		text = text + "\n";
+		while (text.indexOf("\n") != -1){
+			line = text.substring(0, text.indexOf("\n"));
+			if (line.substring(0, 2) == "v "){
+				vert[v] = new Array(3);
+				line = line.substring(2);
+				vert[v][0] = line.substring(0, line.indexOf(" "));
+				line = line.substring(line.indexOf(" ") + 1);
+				vert[v][1] = line.substring(0, line.indexOf(" "));
+				line = line.substring(line.indexOf(" ") + 1);
+				vert[v][2] = line;
+				
+				dist = Math.sqrt(vert[v][0] * vert[v][0] + vert[v][1] * vert[v][1] + vert[v][2] * vert[v][2]);
+				if (dist > max)
+					max = dist;
+				v = v + 1;
+			}
+			else if (line.substring(0,2) == "f "){
+				line = line.substring(2);
+				face[f] = new Array();
+				j = 0;
+				while(line.indexOf(" ") != -1){
+					face[f][j] = line.substring(0, line.indexOf(" ")) - 1;
+					line = line.substring(line.indexOf(" ") + 1);
+					j = j + 1;
+				}
+				face[f][j] = line - 1;
+				face[f][j + 1] = mat;
+				f = f + 1;
+			}
+			else if (line.substring(0, 6) == "usemtl"){
+				mat = line.substring(7);
+			}
+			text = text.substring(text.indexOf("\n") + 1);
 		}
 		scale = calculateScale(max);
 		totalVert = vert.length;
+		totalFace = face.length;
+	};
+	
+	/********************************************************************
+	 * Function tat populates the material[] array with an array        *
+	 * containig, four values: the material name, and the three RGB     *
+	 * values.                                                          *
+	 * #parameters:                                                     *
+	 *   text (string): the content of the mtl file.                    *
+	 * #return: nothing                                                 *
+	 * #scope: private                                                  *
+	 ********************************************************************/ 
+	var readMtlFile = function(text){
+		text = text + "\n";
+		i = -1;
+		while (text.indexOf("\n") != -1){
+			line = text.substring(0, text.indexOf("\n"));
+			if (line.substring(0, 6) == "newmtl"){
+				i = i + 1;
+				material[i] = new Array(4);
+				material[i][0] = line.substring(line.indexOf(" ") + 1);
+			}
+			//Kd, ddifuse color, usefull
+			//Ka, ambient color, not now
+			//Ks, specular color, not now
+			//d or TR, transparency, not now
+			else if (line.substring(0, 3) == "Kd "){
+				line = line.substring(3);
+				material[i][1] = line.substring(0, line.indexOf(" "));
+				line = line.substring(line.indexOf(" ") + 1);
+				material[i][2] = line.substring(0, line.indexOf(" "));
+				line = line.substring(line.indexOf(" ") + 1);
+				material[i][3] = line;
+			}
+			text = text.substring(text.indexOf("\n") + 1);
+		}
 	};
 	
 	/********************************************************************
@@ -408,37 +481,6 @@ function ObJS(file, canv){
 	};
 	
 	/********************************************************************
-	 * Function that populates the face[] array with and array of an    *
-	 * undetermined number of elements, containing the verices that     *
-	 * form a face.                                                     *
-	 * #parameters:                                                     *
-	 *   text (string): the content of the obj file.                    *
-	 * #return: nothing                                                 *
-	 * #scope: private                                                  *
-	 ********************************************************************/ 
-	var readFaces = function(text){
-		var finish = false;
-		var line;
-		var i = 0;
-		var j;
-		while (text.indexOf("f ") != -1){
-			line = text.substring(text.indexOf("f "), text.indexOf("\n", text.indexOf("f ")));
-			line = line.substring(2);
-			face[i] = new Array();
-			j = 0;
-			while(line.indexOf(" ") != -1){
-				face[i][j] = line.substring(0, line.indexOf(" ")) - 1;
-				line = line.substring(line.indexOf(" ") + 1);
-				j = j + 1;
-			}
-			face[i][j] = line - 1;
-			i = i + 1;
-			text = text.substring(text.indexOf("f ") + 1)	
-		}
-		totalFace = face.length;
-	};
-	
-	/********************************************************************
 	 * Function that compares the average Z coordinate of two faces.    *
 	 * Must be used when sorting the face array.                        *
 	 * #parameters:                                                     *
@@ -452,14 +494,14 @@ function ObJS(file, canv){
 		var bZ;
 		var i = 0;
 		var sum = 0.0;
-		while (i < a.length){
+		while (i < a.length - 1){
 			sum = sum + parseFloat(vert[a[i]][2]);
 			i = i + 1;
 		}
 		aZ = sum / parseFloat(i);
 		i = 0;
 		sum = 0;
-		while (i < b.length){
+		while (i < b.length - 1){
 			sum = sum + parseFloat(1 * vert[b[i]][2]);
 			i = i + 1;
 		}
@@ -498,7 +540,7 @@ function ObJS(file, canv){
 			ctx.fillStyle = vertColor;
 			ctx.beginPath();
 			ctx.moveTo(scale * vert[face[i][0]][0], scale * vert[face[i][0]][1]);
-			for (var j = 1; j < face[i].length; j++) {
+			for (var j = 1; j < face[i].length - 1; j++) {
 				ctx.lineTo(scale * vert[face[i][j]][0], scale * vert[face[i][j]][1]);
 				if(dEdges)
 					ctx.stroke();
@@ -511,7 +553,18 @@ function ObJS(file, canv){
 				}
 			}
 			ctx.closePath();
-			ctx.fillStyle = faceColor;
+			if (useMtl){
+				//Get material with the same name as the one in the last element of the face
+				j = 0;
+				while (material[j][0] != face[i][face[i].length - 1] && j < material.length)
+					j = j + 1;
+				if (material[j][0] == face[i][face[i].length - 1])
+					ctx.fillStyle = "rgba(" + Math.round(255 * material[j][1]) + ", " + Math.round(255 * material[j][2]) + ", " + Math.round(255 * material[j][3]) + ", " + faceAlpha + ")";
+				else
+					ctx.fillStyle = faceColor;
+			}
+			else
+				ctx.fillStyle = faceColor;
 			if(dFaces)
 				ctx.fill();
 		}

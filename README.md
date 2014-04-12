@@ -1,7 +1,7 @@
 ObJS
 ====
 
-## A .obj files viewer for HTML5 written in JavaScript ###
+## A 3D Wavefront obj file viewer for HTML5 written in JavaScript ###
 
 <a href="http://imgur.com/kT7mGoK"><img src="http://i.imgur.com/kT7mGoK.png" title="ObJS - Bolt" /></a>
 
@@ -25,14 +25,12 @@ Just include the *ObJS.js* in your project, create a ObJS object, and initalize 
 myObJS = new ObJS();
 myObJS.initCanvas(canvas);
 ```
-Where 
 * *canvas* is the canvas element in witch the model will be represented. If this parameter is not specified, the script will try to use a canvas called *ObJSCanvas*.
 
 Then you can load any obj model by calling
 ```javascript
 myObJS.load(file);
 ```
-Where
 * *file* is a character string with the path to the file, relative or absolute.
 
 
@@ -48,7 +46,7 @@ Note that the canvas is automatically cleared when a new object is loaded.
 
 The model can be rotated and zoomed in and out with the mouse, but it can also be done programmatically.
 
-To rotate the object, just call
+##### Rotate the object #####
 ```javascript
 myObJS.rotateX(-1); //Rotate along the X edge to the left
 myObJS.rotateX(1);  //Rotate along the X edge to the right
@@ -57,7 +55,7 @@ myObJS.rotateY(1);  //Rotate along the Y edge to the right
 ```
 Note that the rotation speed can be set (see *Seting rotation speed*).
 
-To zoom in or out the object, call the method
+##### Zoom #####
 ```javascript
 myObJS.zoom("+"); //Zoom in
 myObJS.zoom("-"); //Zoom out
@@ -74,7 +72,6 @@ You can change parameters such as the elements to draw, their color, transparenc
 ```javascript
 myObJS.drawElement(keyword, on);
 ```
-Where
 * *keyword* is a character string indicating witch element you want or don't want to be drawn. Possible values are
 	- *'backg'*, for the background.
 	- *'verts'*, for the vertizes.
@@ -86,7 +83,6 @@ Where
 ```javascript
 myObJS.colorElement(keyword, color);
 ```
-Where
 * *keyword* is a character string indicating witch element you want to colorize. Possible values are
 	- *'backg'*, for the background.
 	- *'verts'*, for the vertizes.
@@ -98,19 +94,16 @@ Where
 ```javascript
 myObJS.setAlpha(percent);
 ```
-Where
 * *percent* is an integer, between 0 and 100, indicating the level of transparency you want to apply to the faces.
 
 ##### Set rotation speed #####
 ```javascript
 myObJS.setRotationSpeed(value);
 ```
-Where
 * *value* is an integer, between 0 and 10. The greater it is, the greater the rotation speed.
 
 ##### Set zoom speed #####
 ```javascript
 myObJS.setZoomSpeed(value);
 ```
-Where
 * *value* is an integer, between 0 and 10. The greater it is, the greater the zoom speed.
