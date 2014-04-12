@@ -32,7 +32,7 @@
 					<br/>
 					<pre><input type="checkbox" name="drawElement" value="edges" checked onChange="objs.drawElement('edges', this.checked);"/>Edges		<input type="color" id="colorEdges" value="#644646" onChange="objs.colorElement('edges', this.value);"/></pre>
 					<br/>
-					<pre><input type="checkbox" name="drawElement" value="faces" checked onChange="objs.drawElement('faces', this.checked);"/>Faces		<input type="color" id="colorFaces" value="#B4B4FF" onChange="objs.colorElement('faces', this.value);"/></pre>
+					<pre><input type="checkbox" name="drawElement" value="faces" checked onChange="objs.drawElement('faces', this.checked);"/>Faces		<input type="color" id="colorFaces" value="#B4B4FF" onChange="objs.colorElement('faces', this.value);"/><input type="checkbox" checked onChange="objs.linkMaterial(this.checked);"/>Use materials</pre>
 					<pre>		Alpha:<br/>		0% <input type="range" min="0" max="100" step="1" value="60" onInput="objs.setAlpha(this.value);" onChange="objs.setAlpha(this.value);"/>100%</pre>
 					<br/>
 					Rotation speed:<br/>

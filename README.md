@@ -12,6 +12,7 @@ ObJS
 * Object rotation with the mouse.
 * Zoom control with the mousewheel.
 * Choose to draw (or not) vertizes, edges or faces.
+* Use mtl files for material color.
 * Change colors of background, vertizes, edges, and faces during runtime.
 * Change face transparency during runtime, so hidden elements are visible.
 * Change zoom and rotation speed during runtime.
@@ -89,6 +90,15 @@ myObJS.colorElement(keyword, color);
 	- *'edges'*, for the edges.
 	- *'faces'*, for the faces.
 * *color* is a character string with the HEX codeo for the desired color, for example *'#ff0000'* for red.
+
+##### Use materials #####
+
+If a .mtl file is present in the same directory as the obj file, you can use the materials there to colorize the model (enabled by default). 
+```javascript
+myObJS.linkMaterial(true); //Use .mtl file
+myObJS.linkMaterial(false); //Don't use .mtl file
+```
+Note that, when using .mtl files, faces with no material assigned will use the color defined by the user.
 
 ##### Select face transparency #####
 ```javascript

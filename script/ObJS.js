@@ -51,7 +51,7 @@ function ObJS(file, canv){
 	 * Variables containing the number of elements.                     *
 	 ********************************************************************/ 
 	var totalVert;
-	var totalMaterial;
+	var totalMaterial = 0;
 	var totalFace
 	
 	/********************************************************************
@@ -232,6 +232,18 @@ function ObJS(file, canv){
 		}
 		draw();
 	};
+	
+	/********************************************************************
+	 * Function switching the use of mtl file for color.                *
+	 * #parameters:                                                     *
+	 *   value (boolean): indicating if the element is to be drawn.     *
+	 * #return: nothing                                                 *
+	 * #scope: public                                                   *
+	 ********************************************************************/ 
+	this.linkMaterial = function(value){
+		useMtl = value;
+		draw();
+	}
 	
 	/********************************************************************
 	 * Function switching the alpha value of the faces.                 *
@@ -458,6 +470,7 @@ function ObJS(file, canv){
 			}
 			text = text.substring(text.indexOf("\n") + 1);
 		}
+		totalMaterial = material.length;
 	};
 	
 	/********************************************************************
@@ -523,7 +536,7 @@ function ObJS(file, canv){
 		ctx.font = "12px Arial";
 		var h = canvas.height / 2 - 14;
 		var w = 10 - (canvas.height / 2);
-		ctx.fillText("ObJS   " + totalVert + " vertizes   " + totalFace + " faces", w, h);
+		ctx.fillText("ObJS:   " + totalVert + " vertizes   " + totalFace + " faces   " + totalMaterial + " materials", w, h);
 	};
 	
 	/********************************************************************
