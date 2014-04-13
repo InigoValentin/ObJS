@@ -3,9 +3,8 @@
 	<head>
 		<meta content="text/html; charset=windows-1252" http-equiv="content-type"/>
 		<title>ObJS</title>
-		<!--Script files -->
+		<!-- Script file -->
 		<script type="text/javascript" src="script/ObJS.js"></script>
-		<!-- CSS files -->
 	</head>
 	<body onload="objs = new ObJS(); objs.initCanvas();objs.load(document.getElementById('objSelector').value);">
 		<table>
@@ -15,9 +14,9 @@
 						Your browser does not support the HTML5 canvas tag.
 					</canvas>
 				</td>
-				<td>
+				<td id="ObJSControl">
 					Choose a model:
-					<select id="objSelector" name="objSelector" onChange="objs.load(this.value)">
+					<select id="objSelector" onChange="objs.load(this.value)">
 						<option value="obj/rainbow.obj" selected="selected">Rainbow</option>
 						<option value="obj/cube.obj">Cube</option>
 						<option value="obj/sphere.obj">Sphere</option>
@@ -27,19 +26,30 @@
 						<option value="obj/seaplane.obj">Seaplane</option>
 					</select>
 					<br/><br/><br/>
-					<pre><input type="checkbox" name="drawElement" value="backg" checked onChange="objs.drawBackground(this.checked);"/>Background	<input type="color" id="colorBackg" value="#C8C8C8" onChange="objs.setBackgroundColor(this.value)"/></pre>
+					<input type="checkbox" value="backg" checked onChange="objs.drawBackground(this.checked);"/>Background
+					<input type="color" value="#C8C8C8" onChange="objs.setBackgroundColor(this.value)"/>
 					<br/>
-					<pre><input type="checkbox" name="drawElement" value="verts" checked onChange="objs.drawVerts(this.checked);"/>Vertices	<input type="color" id="colorVerts" value="#0A0A0A" onChange="objs.setVertizesColor(this.value);"/></pre>
+					<input type="checkbox"  value="verts" checked onChange="objs.drawVerts(this.checked);"/>Vertices
+					<input type="color"  value="#0A0A0A" onChange="objs.setVertizesColor(this.value);"/>
 					<br/>
-					<pre><input type="checkbox" name="drawElement" value="edges" checked onChange="objs.drawEdges(this.checked);"/>Edges		<input type="color" id="colorEdges" value="#644646" onChange="objs.setEdgesColor(this.value);"/></pre>
+					<input type="checkbox" value="edges" checked onChange="objs.drawEdges(this.checked);"/>Edges
+					<input type="color" value="#644646" onChange="objs.setEdgesColor(this.value);"/>
 					<br/>
-					<pre><input type="checkbox" name="drawElement" value="faces" checked onChange="objs.drawFaces(this.checked);"/>Faces		<input type="color" id="colorFaces" value="#B4B4FF" onChange="objs.setFacesColor(this.value);"/><input type="checkbox" checked onChange="objs.linkMaterial(this.checked);"/>Use materials</pre>
-					<pre>		Alpha:<br/>		0% <input type="range" min="0" max="100" step="1" value="60" onInput="objs.setAlpha(this.value);" onChange="objs.setAlpha(this.value);"/>100%</pre>
-					<br/>
-					Rotation speed:<br/>
+					<input type="checkbox" value="faces" checked onChange="objs.drawFaces(this.checked);"/>Faces
+					<input type="color" value="#B4B4FF" onChange="objs.setFacesColor(this.value);"/>
+					<input type="checkbox" checked onChange="objs.linkMaterial(this.checked);"/>Use materials
+					<br/><br/>
+					Alpha:<br/>
+					0% <input type="range" min="0" max="100" step="1" value="60" onInput="objs.setAlpha(this.value);" onChange="objs.setAlpha(this.value);"/>100%
+					<br/><br/>
+					Rotation speed:<br/>&nbsp;&nbsp;(Drag the model with the mouse)<br/>
 					0% <input type="range" min="0" max="10" step="1" value="3" onInput="objs.setRotationSpeed(this.value);" onChange="objs.setRotationSpeed(this.value);"/>100%
-					<br/>Zoom speed:<br/>
+					<br/><br/>
+					Zoom speed:<br/>&nbsp;&nbsp;(Use the mousewheel to zoom in or out)<br/>
 					0% <input type="range" min="0" max="10" step="1" value="2" onInput="objs.setZoomSpeed(this.value);" onChange="objs.setZoomSpeed(this.value);"/>100%
+					<br/><br/>
+					Movement speed:<br/>&nbsp;&nbsp;(Drag the model while holding the shift key)<br/>
+					0% <input type="range" min="0" max="10" step="1" value="5" onInput="objs.setMovementSpeed(this.value);" onChange="objs.setMovementSpeed(this.value);"/>100%
 				</td>
 			</tr>
 		</table>

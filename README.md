@@ -45,23 +45,39 @@ Note that the canvas is automatically cleared when a new object is loaded.
 
 ### Transformations ###
 
-The model can be rotated and zoomed in and out with the mouse, but it can also be done programmatically.
-
 ##### Rotate the object #####
+
+You can rotate the object by dragging it with the mouse. Also, you can apply rotation programatically:
+
 ```javascript
 myObJS.rotateX(-1); //Rotate along the X edge to the left
 myObJS.rotateX(1);  //Rotate along the X edge to the right
 myObJS.rotateY(-1); //Rotate along the Y edge to the left
 myObJS.rotateY(1);  //Rotate along the Y edge to the right
 ```
-Note that the rotation speed can be set (see *Seting rotation speed*).
+Note that the rotation speed can be set (see *Set rotation speed*).
+
+##### Move the object #####
+
+You can move the object around by dragging it with the mouse while holding down the *shift* key. Also, you can move it programatically:
+
+```javascript
+myObJS.rotateX(-1); //Rotate along the X edge to the left
+myObJS.rotateX(1);  //Rotate along the X edge to the right
+myObJS.rotateY(-1); //Rotate along the Y edge to the left
+myObJS.rotateY(1);  //Rotate along the Y edge to the right
+```
+Note that the rotation speed can be set (see *Set movement speed*).
 
 ##### Zoom #####
+
+Zoom in and out can be achieven with the mouse wheel, or programatically:
+
 ```javascript
 myObJS.zoom("+"); //Zoom in
 myObJS.zoom("-"); //Zoom out
 ```
-Note that the zoom speed can be set (see *Seting zoom speed*).
+Note that the zoom speed can be set (see *Set zoom speed*).
 
 
 
@@ -120,6 +136,12 @@ myObJS.setAlpha(percent);
 myObJS.setRotationSpeed(value);
 ```
 * *value* is an integer, between 0 and 10. The greater it is, the greater the rotation speed.
+
+##### Set movement speed #####
+```javascript
+myObJS.setMovementSpeed(value);
+```
+* *value* is an integer, between 0 and 10. The greater it is, the greater the movement speed.
 
 ##### Set zoom speed #####
 ```javascript

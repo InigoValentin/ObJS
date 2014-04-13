@@ -18,6 +18,7 @@ function ObJS(){
 	var vertSize = 4; //Make it even: at small scales will look better
 	var rotationSpeed = 90; //Smaller = faster. 100 is a good speed
 	var zoomSpeed = 0.161; //0-1. 0.2 or 0.3 are good speeds
+	var moveSpeed = .5;
 	
 	/********************************************************************
 	 * Variable containing this object, to be refered from nested       *
@@ -118,11 +119,16 @@ function ObJS(){
 					return;
 				var x = e.offsetX==undefined?e.layerX:e.offsetX;
 				var y = e.offsetY==undefined?e.layerY:e.offsetY;
-				thisObJS.rotateY(x - pX);
-				thisObJS.rotateX(y - pY);
+				if (e.shiftKey){
+					thisObJS.moveHorizontal(x - pX);
+					thisObJS.moveVertical(y - pY);
+				}
+				else{
+					thisObJS.rotateY(x - pX);
+					thisObJS.rotateX(y - pY);
+				}
 				pX = x;
 				pY = y;
-				draw();
 				return false;
 			};
 			
@@ -294,10 +300,11 @@ function ObJS(){
 	}
 	
 	/********************************************************************
-	 * Function that rotates elements in the canvas along the Y axis,   *
-	 * calculating the new position for each vertex in the vert array.  *
+	 * Functions that rotate elements in the canvas along the           *
+	 * correspondent axys, calculating the new position for each vertex *
+	 * in the vert array.                                               *
 	 * #parameters:                                                     *
-	 *   des (int): mouse displacement from the last frame.             *
+	 *   des (int): distance to rotate.                                 *
 	 * #return: nothing                                                 *
 	 * #scope: public                                                   *
 	 ********************************************************************/
@@ -308,16 +315,9 @@ function ObJS(){
 			vert[i][0] = x * Math.cos(des / rotationSpeed) - z * Math.sin(des / rotationSpeed);
 			vert[i][2] = z * Math.cos(des / rotationSpeed) + x * Math.sin(des / rotationSpeed);
 		}
+		draw();
 	};
 	
-	/********************************************************************
-	 * Function that rotates elements in the canvas along the X axis,   *
-	 * calculating the new position for each vertex in the vert array.  *
-	 * #parameters:                                                     *
-	 *   des (int): mouse displacement from the last frame.             *
-	 * #return: nothing                                                 *
-	 * #scope: public                                                   *
-	 ********************************************************************/
 	this.rotateX = function(des){
 		for (var i = 0; i < vert.length; i ++) {
 			var y = vert[i][1];
@@ -325,6 +325,42 @@ function ObJS(){
 			vert[i][1] = y * Math.cos(des / rotationSpeed) - z * Math.sin(des / rotationSpeed);
 			vert[i][2] = z * Math.cos(des / rotationSpeed) + y * Math.sin(des / rotationSpeed);
 		}
+		draw();
+	};
+	
+	/********************************************************************
+	 * Function switching the movement speed of the model.              *
+	 * #parameters:                                                     *
+	 *   percent (int): Value (0-10) of speed.                          *
+	 * #return: nothing                                                 *
+	 * #scope: public                                                   *
+	 ********************************************************************/ 
+	this.setMovementSpeed = function(percent){
+		if (percent >= 0 && percent <= 10)
+			moveSpeed = ((percent * 0.8) / 10) + 0.01;
+		else
+			console.log("setMoveSpeed(" + percent + "); ERROR: Only values between 0 and 10 are allowed");
+	}
+	
+	/********************************************************************
+	 * Functions that move elements in the canvas along the selected    *
+	 * direction, calculating the new position for each vertex in the   *
+	 * vert array.                                                      *
+	 * #parameters:                                                     *
+	 *   des (int): distance to move.                                   *
+	 * #return: nothing                                                 *
+	 * #scope: public                                                   *
+	 ********************************************************************/
+	this.moveVertical = function(des){
+		for (var i = 0; i < vert.length; i ++)
+			vert[i][1] = (vert[i][1] * 1) + des * (moveSpeed / 50);
+		draw();
+	};
+	
+	this.moveHorizontal = function(des){
+		for (var i = 0; i < vert.length; i ++)
+			vert[i][0] = (vert[i][0] * 1) + des * (moveSpeed / 50);
+		draw();
 	};
 	
 	/********************************************************************
@@ -592,7 +628,7 @@ function ObJS(){
 		ctx.fillStyle = textColor;
 		ctx.font = "12px Arial";
 		var h = canvas.height / 2 - 14;
-		var w = 10 - (canvas.height / 2);
+		var w = 10 - (canvas.width / 2);
 		ctx.fillText("ObJS:   " + totalVert + " vertizes   " + totalFace + " faces   " + totalMaterial + " materials", w, h);
 	};
 	
