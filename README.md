@@ -3,7 +3,7 @@ ObJS
 
 ## A 3D Wavefront obj file viewer for HTML5 written in JavaScript ###
 
-<a href="http://imgur.com/kT7mGoK"><img src="http://i.imgur.com/kT7mGoK.png" title="ObJS - Bolt" /></a>
+<a href="http://imgur.com/MIfKkHG"><img src="http://i.imgur.com/MIfKkHG.png" title="ObJS - Seaplane" /></a>
 
 
 
@@ -71,25 +71,34 @@ You can change parameters such as the elements to draw, their color, transparenc
 
 ##### Select which elements to draw #####
 ```javascript
-myObJS.drawElement(keyword, on);
+myObJS.drawVertizes(true);    //Draw vertizes
+myObJS.drawVertizes(false);   //Don't draw vertizes
+
+myObJS.drawEdges(true);       //Draw edges
+myObJS.drawEdges(false);      //Don't draw edges
+
+myObJS.drawFaces(true);       //Draw faces
+myObJS.drawFaces(false);      //Don't draw faces
+
+myObJS.drawBackground(true);  //Draw the background
+myObJS.drawBackground(false); //Don't draw the background
 ```
-* *keyword* is a character string indicating witch element you want or don't want to be drawn. Possible values are
-	- *'backg'*, for the background.
-	- *'verts'*, for the vertizes.
-	- *'edges'*, for the edges.
-	- *'faces'*, for the faces.
-* *on* is a Boolean value, indicating if the element is to be drawn or not.
 
 ##### Select color for elements #####
 ```javascript
-myObJS.colorElement(keyword, color);
+myObJS.setVertizesColor(code);   //Set the color for the vertizes
+
+myObJS.setEdgesColor(code);      //Set the color for the edges
+
+myObJS.setFacesColor(code);      //Set the color for the faces
+
+myObJS.setBackgroundColor(code); //Set the background color
 ```
-* *keyword* is a character string indicating witch element you want to colorize. Possible values are
-	- *'backg'*, for the background.
-	- *'verts'*, for the vertizes.
-	- *'edges'*, for the edges.
-	- *'faces'*, for the faces.
-* *color* is a character string with the HEX codeo for the desired color, for example *'#ff0000'* for red.
+* *color* is a hexadecimal triplet with the color code, including the number sign ('#'), and three or six hexadecimal characters. Valid examples are:
+	- *'#ff0000'*  for <span style="color:#ff0000">red</span>.
+	- *'#f00'* also for <span style="color:#ff0000">red</span>.
+	- *'#FF8600'*, for <span style="color:#FF8600">orange</span>.
+	- *'#DDFFDD'*, for <span style="color:#AAFFAA">light green</span>.
 
 ##### Use materials #####
 

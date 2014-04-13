@@ -11,7 +11,7 @@
 		<table>
 			<tr>
 				<td>
-					<canvas id="ObJSCanvas" width="500" height="500">
+					<canvas id="ObJSCanvas" width="800" height="600">
 						Your browser does not support the HTML5 canvas tag.
 					</canvas>
 				</td>
@@ -24,15 +24,16 @@
 						<option value="obj/monkey.obj">Monkey</option>
 						<option value="obj/bolt.obj">Bolt</option>
 						<option value="obj/multiple.obj">Multiple Objects</option>
+						<option value="obj/seaplane.obj">Seaplane</option>
 					</select>
 					<br/><br/><br/>
-					<pre><input type="checkbox" name="drawElement" value="backg" checked onChange="objs.drawElement('backg', this.checked);"/>Background	<input type="color" id="colorBackg" value="#C8C8C8" onChange="objs.colorElement('backg', this.value);"/></pre>
+					<pre><input type="checkbox" name="drawElement" value="backg" checked onChange="objs.drawBackground(this.checked);"/>Background	<input type="color" id="colorBackg" value="#C8C8C8" onChange="objs.setBackgroundColor(this.value)"/></pre>
 					<br/>
-					<pre><input type="checkbox" name="drawElement" value="verts" checked onChange="objs.drawElement('verts', this.checked);"/>Vertices	<input type="color" id="colorVerts" value="#0A0A0A" onChange="objs.colorElement('verts', this.value);"/></pre>
+					<pre><input type="checkbox" name="drawElement" value="verts" checked onChange="objs.drawVerts(this.checked);"/>Vertices	<input type="color" id="colorVerts" value="#0A0A0A" onChange="objs.setVertizesColor(this.value);"/></pre>
 					<br/>
-					<pre><input type="checkbox" name="drawElement" value="edges" checked onChange="objs.drawElement('edges', this.checked);"/>Edges		<input type="color" id="colorEdges" value="#644646" onChange="objs.colorElement('edges', this.value);"/></pre>
+					<pre><input type="checkbox" name="drawElement" value="edges" checked onChange="objs.drawEdges(this.checked);"/>Edges		<input type="color" id="colorEdges" value="#644646" onChange="objs.setEdgesColor(this.value);"/></pre>
 					<br/>
-					<pre><input type="checkbox" name="drawElement" value="faces" checked onChange="objs.drawElement('faces', this.checked);"/>Faces		<input type="color" id="colorFaces" value="#B4B4FF" onChange="objs.colorElement('faces', this.value);"/><input type="checkbox" checked onChange="objs.linkMaterial(this.checked);"/>Use materials</pre>
+					<pre><input type="checkbox" name="drawElement" value="faces" checked onChange="objs.drawFaces(this.checked);"/>Faces		<input type="color" id="colorFaces" value="#B4B4FF" onChange="objs.setFacesColor(this.value);"/><input type="checkbox" checked onChange="objs.linkMaterial(this.checked);"/>Use materials</pre>
 					<pre>		Alpha:<br/>		0% <input type="range" min="0" max="100" step="1" value="60" onInput="objs.setAlpha(this.value);" onChange="objs.setAlpha(this.value);"/>100%</pre>
 					<br/>
 					Rotation speed:<br/>

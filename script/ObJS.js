@@ -4,7 +4,7 @@
  * #parameters: none                                                *
  * #return: nothing                                                 *
  ********************************************************************/
-function ObJS(file, canv){
+function ObJS(){
 	
 	/********************************************************************
 	 * Parameters for costumization.                                    *
@@ -145,6 +145,8 @@ function ObJS(file, canv){
 	 * #scope: public                                                   *
 	 ********************************************************************/
 	this.load = function(file){
+		if(!canvasInitialized)
+			initCanvas();
 		//Get obj file
 		var xmlhttp = new XMLHttpRequest();
 		xmlhttp.open("GET", file, false);
@@ -153,7 +155,6 @@ function ObJS(file, canv){
 		//Get mtl file
 		xmlhttp = new XMLHttpRequest();
 		xmlhttp.open("GET",file.substring(0, file.lastIndexOf(".")) + ".mtl", false);
-		console.log("GET" + file.substring(0, file.lastIndexOf(".")) + ".mtl");
 		xmlhttp.send();
 		var mtlContent = xmlhttp.responseText;
 		initArrays();
@@ -163,74 +164,87 @@ function ObJS(file, canv){
 	};
 	
 	/********************************************************************
-	 * Function switching the elements to draw (dVerts, dEdges, dFaces) *
+	 * Functions switching the elements drawn (dVerts, dEdges, dFaces). *
 	 * #parameters:                                                     *
-	 *   name (string): key to the element to draw.                     *
-	 *   value (boolean): indicating if the element is to be drawn.     *
+	 *   on (boolean): indicating if the element is to be drawn.        *
 	 * #return: nothing                                                 *
 	 * #scope: public                                                   *
 	 ********************************************************************/ 
-	this.drawElement = function(name, value){
-		switch (name){
-			case "verts":
-				dVerts = value;
-				break;
-			case "edges":
-				dEdges = value;
-				break;
-			case "faces":
-				dFaces = value;
-				break;
-			case "backg":
-				dBackg = value;
-				break;
+	this.drawVertizes = function(on){
+		if (on == true || on == false){
+			dVerts = on;
+			draw();
 		}
-		draw();
 	};
-
-	/********************************************************************
-	 * Function that turns a hex color code in RGB.                     *
-	 * stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb    *
-	 * #parameters:                                                     *
-	 *   hex (string): color code, for example "#33ff99"                *
-	 * #return: (Array) r, g, b, with their correspondent color.        *
-	 * #scope: private                                                  *
-	 ********************************************************************/ 
-	var hexToRgb = function(hex) {
-		var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-		return result ? {
-			r: parseInt(result[1], 16),
-			g: parseInt(result[2], 16),
-			b: parseInt(result[3], 16)
-		} : null;
+	
+	this.drawEdges = function(on){
+		if (on == true || on == false){
+			dEdges = on;
+			draw();
+		}
 	};
-
+	
+	this.drawFaces = function(on){
+		if (on == true || on == false){
+			dFaces = on;
+			draw();
+		}
+	};
+	
+	this.drawBackground = function(on){
+		if (on == true || on == false){
+			dBackg = on;
+			draw();
+		}
+	};
+	
 	/********************************************************************
-	 * Function switching the color of the elements.                    *
+	 * Functions switching the color of the elements.                   *
 	 * #parameters:                                                     *
-	 *   name (string): key to the element to colorize.                 *
-	 *   value (boolean): indicating if the element is to be drawn.     *
+	 *   code (string): hex color value, in #fff or #ffffff form. If    *
+	 *                  wrong, a message will be printed to console,    *
+	 *                  and nothing will be changed.                    *
 	 * #return: nothing                                                 *
 	 * #scope: public                                                   *
-	 ********************************************************************/ 
-	this.colorElement = function(name, value){
-		var color = hexToRgb(value)
-		var str = "rgba(" + color.r + ", " + color.g + ", "  + color.b + ", 1)"
-		switch (name){
-			case "backg":
-				backColor = "rgba(" + color.r + ", " + color.g + ", "  + color.b + ", 1)";
-				break;
-			case "verts":
-				vertColor = "rgba(" + color.r + ", " + color.g + ", "  + color.b + ", 1)";
-				break;
-			case "edges":
-				edgeColor = "rgba(" + color.r + ", " + color.g + ", "  + color.b + ", 1)";
-				break;
-			case "faces":
-				faceColor = "rgba(" + color.r + ", " + color.g + ", "  + color.b + ", " + faceAlpha + ")";
-				break;
+	 ********************************************************************/
+	this.setVertizesColor = function(code){
+		if (isColor(code)){
+			var color = hexToRgb(code);
+			vertColor = "rgba(" + color.r + ", " + color.g + ", "  + color.b + ", 1)";
+			draw();
 		}
-		draw();
+		else
+			console.log("setVertizesColor(" + code + ") ERROR: " + code + " not a valid hex color");
+	};
+	
+	this.setEdgesColor = function(code){
+		if (isColor(code)){
+			var color = hexToRgb(code);
+			edgeColor = "rgba(" + color.r + ", " + color.g + ", "  + color.b + ", 1)";
+			draw();
+		}
+		else
+			console.log("setEdgesColor(" + code + ") ERROR: " + code + " not a valid hex color");
+	};
+	
+	this.setFacesColor = function(code){
+		if (isColor(code)){
+			var color = hexToRgb(code);
+			faceColor = "rgba(" + color.r + ", " + color.g + ", "  + color.b + ", 1)";
+			draw();
+		}
+		else
+			console.log("setFacesColor(" + code + ") ERROR: " + code + " not a valid hex color");
+	};
+	
+	this.setBackgroundColor = function(code){
+		if (isColor(code)){
+			var color = hexToRgb(code);
+			backColor = "rgba(" + color.r + ", " + color.g + ", "  + color.b + ", 1)";
+			draw();
+		}
+		else
+			console.log("setBackgroundColor(" + code + ") ERROR: " + code + " not a valid hex color");
 	};
 	
 	/********************************************************************
@@ -342,16 +356,59 @@ function ObJS(file, canv){
 		draw();
 	};
 	
+	/********************************************************************
+	 * Function that clears the arrays and the canvas. Use to unload a  *
+	 * model.                                                           *
+	 * #parameters: none                                                *
+	 * #return: nothing                                                 *
+	 * #scope: public                                                  *
+	 ********************************************************************/
 	this.clear = function(){
 		initArrays();
 		clearCanvas();
-	}
+	};
+	
+	/********************************************************************
+	 * Function that turns a hex color code in RGB.                     *
+	 * stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb    *
+	 * #parameters:                                                     *
+	 *   hex (string): color code, for example "#33ff99"                *
+	 * #return: (Array) r, g, b, with their correspondent color.        *
+	 * #scope: private                                                  *
+	 ********************************************************************/ 
+	var hexToRgb = function(hex) {
+		var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+		return result ? {
+			r: parseInt(result[1], 16),
+						g: parseInt(result[2], 16),
+									b: parseInt(result[3], 16)
+		} : null;
+	};
+	
+	/********************************************************************
+	 * Function that checks if a string is a valid hexadecimal color    *
+	 * code, in the format '#ffffff' or '#fff'                          *
+	 * #parameters:                                                     *
+	 *   code (string): Code to check.                                  *
+	 * #return: (Boolean) True if valid color code, false otherwise.    *
+	 * #scope: private                                                  *
+	 ********************************************************************/ 
+	var isColor = function(code){
+		if (code[0] != '#')
+			return false;
+		if (code.length != 4 && code.length != 7)
+			return false
+					for (var i = 1; i < code.length; i ++)
+						if (code[i] < '0' || (code[i] > 9 && code[i] < 'A') || (code[i] > 'Z' && code[i] < 'a') || code[i] > 'z')
+							return false;
+						return true;	
+	};
 	
 	/********************************************************************
 	 * Function that clears the canvas and gets it ready to draw on it. *
 	 * #parameters: none                                                *
 	 * #return: nothing                                                 *
-	 * #scope: public                                                   *
+	 * #scope: private                                                  *
 	 ********************************************************************/
 	var clearCanvas = function(){
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
