@@ -41,6 +41,8 @@ function ObJS(){
 	 * Variable to determine if the mouse button is being holded down.  *
 	 ********************************************************************/ 
 	var mDown = false;
+	var pinch = false;
+	var pinchScale = 0;
 	
 	/********************************************************************
 	 * Variables containing the canvas and its context.                 *
@@ -132,13 +134,67 @@ function ObJS(){
 				return false;
 			};
 			
-			canvas.addEventListener('mousewheel',function(event){
+			canvas.onmouseout = function(e){
+				if(mDown)
+					mDown = false;
+			}
+			
+			canvas.addEventListener('mousewheel',function(e){
+				e.preventDefault();
 				if (event.wheelDelta > 0)
-					thisObJS.zoom("-");
+					thisObJS.zoom(1);
 				else 
-					thisObJS.zoom("+");
+					thisObJS.zoom(-1);
 				return false;
 			}, false);
+			
+			canvas.addEventListener('touchstart',function(e){
+				if(e.touches.length == 2) {
+					pinch = true;
+					pinchScale = Math.sqrt((e.touches[0].clientX-e.touches[1].clientX) * (e.touches[0].clientX-e.touches[1].clientX) + (e.touches[0].clientY-e.touches[1].clientY) * (e.touches[0].clientY-e.touches[1].clientY));
+				}
+				return false;
+			}, false);
+			
+			canvas.addEventListener('touchend',function(e){
+				if(pinch)
+					pinch = false;
+				return false;
+			}, false);
+			
+			canvas.addEventListener('touchcancel',function(e){
+				if(pinch)
+					pinch = false;
+				return false;
+			}, false);
+			
+			canvas.addEventListener('touchleave',function(e){
+				if(pinch)
+					pinch = false;
+				return false;
+			}, false);
+			
+			canvas.addEventListener('touchmove',function(e){
+				e.preventDefault();
+				if(pinch){
+					var dist = Math.sqrt((e.touches[0].clientX-e.touches[1].clientX) * (e.touches[0].clientX-e.touches[1].clientX) + (e.touches[0].clientY-e.touches[1].clientY) * (e.touches[0].clientY-e.touches[1].clientY));
+					if (dist > pinchScale)
+						thisObJS.zoom(1);
+					else if (dist < pinchScale)
+						thisObJS.zoom(-1);
+					pinchScale = dist;
+				}
+				else{
+					var x = e.touches[0].clientX
+					var y = e.touches[0].clientY;
+					thisObJS.rotateY(x - pX);
+					thisObJS.rotateX(y - pY);
+					pX = x;
+					pY = y;
+				}
+				return false;
+			}, false);
+			
 			canvasInitialized = true;
 		}
 	};
@@ -384,11 +440,8 @@ function ObJS(){
 	 * #return: nothing                                                 *
 	 * #scope: public                                                   *
 	 ********************************************************************/
-	this.zoom = function(dir){
-		if (dir == "-")
-			scale = Math.round(scale * (1 + zoomSpeed));
-		if (dir == "+")
-			scale = Math.round(scale * (1 - zoomSpeed));
+	this.zoom = function(val){
+		scale = scale + val * scale * zoomSpeed;
 		draw();
 	};
 	
@@ -434,10 +487,10 @@ function ObJS(){
 			return false;
 		if (code.length != 4 && code.length != 7)
 			return false
-					for (var i = 1; i < code.length; i ++)
-						if (code[i] < '0' || (code[i] > 9 && code[i] < 'A') || (code[i] > 'Z' && code[i] < 'a') || code[i] > 'z')
-							return false;
-						return true;	
+		for (var i = 1; i < code.length; i ++)
+			if (code[i] < '0' || (code[i] > 9 && code[i] < 'A') || (code[i] > 'Z' && code[i] < 'a') || code[i] > 'z')
+				return false;
+			return true;	
 	};
 	
 	/********************************************************************

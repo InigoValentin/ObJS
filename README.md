@@ -9,8 +9,10 @@ ObJS
 
 ### Features ###
 
-* Object rotation with the mouse.
-* Zoom control with the mousewheel.
+* Object rotation.
+* Zoom in and out.
+* Object movement.
+* Mouse and touch control.
 * Choose to draw (or not) vertizes, edges or faces.
 * Use mtl files for material color.
 * Change colors of background, vertizes, edges, and faces during runtime.
@@ -47,7 +49,7 @@ Note that the canvas is automatically cleared when a new object is loaded.
 
 ##### Rotate the object #####
 
-You can rotate the object by dragging it with the mouse. Also, you can apply rotation programatically:
+You can rotate the object by dragging it with the mouse or your finger in a touch screen. Also, you can apply rotation programatically:
 
 ```javascript
 myObJS.rotateX(-1); //Rotate along the X edge to the left
@@ -71,12 +73,12 @@ Note that the rotation speed can be set (see *Set movement speed*).
 
 ##### Zoom #####
 
-Zoom in and out can be achieven with the mouse wheel, or programatically:
+Zoom in and out can be achieven with the mouse wheel, by pinching the mode if you are using a touch screen, or programatically:
 
 ```javascript
-myObJS.zoom("+"); //Zoom in
-myObJS.zoom("-"); //Zoom out
+myObJS.zoom(value);
 ```
+*value* can be any float number, positive to zoom in, and negative to zoom out. *1* and *-1* are a one step zoom in or out. 
 Note that the zoom speed can be set (see *Set zoom speed*).
 
 
