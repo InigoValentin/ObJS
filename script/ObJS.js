@@ -542,6 +542,7 @@ function ObJS(){
 		var max = 0;
 		var j;
 		var dist;
+		var fac;
 		var mat = "null";
 		text = text + "\n";
 		while (text.indexOf("\n") != -1){
@@ -565,11 +566,17 @@ function ObJS(){
 				face[f] = new Array();
 				j = 0;
 				while(line.indexOf(" ") != -1){
-					face[f][j] = line.substring(0, line.indexOf(" ")) - 1;
+					face[f][j] = line.substring(0, line.indexOf(" "));
+					if (face[f][j].indexOf('/') != -1)
+						face[f][j] = face[f][j].substring(0, face[f][j].indexOf('/'));
+					face[f][j] = face[f][j] - 1;
 					line = line.substring(line.indexOf(" ") + 1);
 					j = j + 1;
 				}
-				face[f][j] = line - 1;
+				face[f][j] = line;
+				if (face[f][j].indexOf('/') != -1)
+					face[f][j] = face[f][j].substring(0, face[f][j].indexOf('/'));
+				face[f][j] = face[f][j] - 1;
 				face[f][j + 1] = mat;
 				f = f + 1;
 			}
