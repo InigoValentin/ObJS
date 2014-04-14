@@ -6,6 +6,11 @@ ObJS
 <a href="http://imgur.com/MIfKkHG"><img src="http://i.imgur.com/MIfKkHG.png" title="ObJS - Seaplane" /></a>
 
 
+### Live demo ###
+
+<a href="http://seavenois.com/jstricks/ObJS/">http://seavenois.com/jstricks/ObJS/</a>
+
+
 
 ### Features ###
 
