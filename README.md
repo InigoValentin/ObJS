@@ -18,9 +18,9 @@ ObJS
 * Zoom in and out.
 * Object movement.
 * Mouse and touch control.
-* Choose to draw (or not) vertizes, edges or faces.
+* Choose to draw (or not) vertices, edges or faces.
 * Use mtl files for material color.
-* Change colors of background, vertizes, edges, and faces during runtime.
+* Change colors of background, vertices, edges, and faces during runtime.
 * Change face transparency during runtime, so hidden elements are visible.
 * Change zoom and rotation speed during runtime.
 
@@ -98,8 +98,8 @@ You can change parameters such as the elements to draw, their color, transparenc
 
 ##### Select which elements to draw #####
 ```javascript
-myObJS.drawVertizes(true);    //Draw vertizes
-myObJS.drawVertizes(false);   //Don't draw vertizes
+myObJS.drawVertices(true);    //Draw vertices
+myObJS.drawVertices(false);   //Don't draw vertices
 
 myObJS.drawEdges(true);       //Draw edges
 myObJS.drawEdges(false);      //Don't draw edges
@@ -114,7 +114,7 @@ myObJS.drawBackground(false); //Don't draw the background
 
 ##### Select color for elements #####
 ```javascript
-myObJS.setVertizesColor(code);   //Set the color for the vertizes
+myObJS.setVerticesColor(code);   //Set the color for the vertices
 
 myObJS.setEdgesColor(code);      //Set the color for the edges
 

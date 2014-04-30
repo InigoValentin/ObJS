@@ -258,7 +258,7 @@ function ObJS(){
 	 * #return: nothing                                                 *
 	 * #scope: public                                                   *
 	 ********************************************************************/ 
-	this.drawVertizes = function(on){
+	this.drawVertices = function(on){
 		if (on == true || on == false){
 			dVerts = on;
 			draw();
@@ -295,14 +295,14 @@ function ObJS(){
 	 * #return: nothing                                                 *
 	 * #scope: public                                                   *
 	 ********************************************************************/
-	this.setVertizesColor = function(code){
+	this.setVerticesColor = function(code){
 		if (isColor(code)){
 			var color = hexToRgb(code);
 			vertColor = "rgba(" + color.r + ", " + color.g + ", "  + color.b + ", 1)";
 			draw();
 		}
 		else
-			console.log("setVertizesColor(" + code + ") ERROR: " + code + " not a valid hex color");
+			console.log("setVerticesColor(" + code + ") ERROR: " + code + " not a valid hex color");
 	};
 	
 	this.setEdgesColor = function(code){
@@ -553,7 +553,7 @@ function ObJS(){
 	/********************************************************************
 	 * Function tat populates the vert[] array with and array of three  *
 	 * elements, containig the coordinates, and the face[] array with   *
-	 * the vertizes forming the face, plus one element indicating the   *
+	 * the vertices forming the face, plus one element indicating the   *
 	 * codename of the material.                                        *
 	 * #parameters:                                                     *
 	 *   text (string): the content of the obj file.                    *
@@ -717,11 +717,11 @@ function ObJS(){
 		ctx.font = "12px Arial";
 		var h = canvas.height / 2 - 14;
 		var w = 10 - (canvas.width / 2);
-		ctx.fillText("ObJS:   " + totalVert + " vertizes   " + totalFace + " faces   " + totalMaterial + " materials", w, h);
+		ctx.fillText("ObJS:   " + totalVert + " vertices   " + totalFace + " faces   " + totalMaterial + " materials", w, h);
 	};
 	
 	/********************************************************************
-	 * Function that draws th vertizes, faces and edges in the canvas.  *
+	 * Function that draws th vertices, faces and edges in the canvas.  *
 	 * #parameters: none                                                *
 	 * #return: nothing                                                 *
 	 * #scope: private                                                  *
