@@ -75,6 +75,7 @@ function ObJS(){
 	/********************************************************************
 	 * Booleans to indicate if mtl file should be used.                 *
 	 ********************************************************************/
+	var hasMtl = true;
 	var useMtl = true;
 	
 	/********************************************************************
@@ -223,6 +224,31 @@ function ObJS(){
 		readFile(fileContent);
 		readMtlFile(mtlContent);
 		draw();
+	};
+	/********************************************************************
+	 * Getters that determine if an element is being drawn.             *
+	 ********************************************************************/
+	this.isBackgroungDrawn = function(){
+		return dBackg;
+	};
+	
+	this.isVertexDrawn = function(){
+		return dVerts;
+	};
+	
+	this.isEdgeDrawn = function(){
+		return dEdges;
+	};
+	
+	this.isFaceDrawn = function(){
+		return dFaces;
+	};
+	
+	/********************************************************************
+	 * Getters that determine if the model has associated materials.    *
+	 ********************************************************************/
+	this.isBackgroungDrawn = function(){
+		return dBackg;
 	};
 	
 	/********************************************************************
@@ -624,6 +650,8 @@ function ObJS(){
 			text = text.substring(text.indexOf("\n") + 1);
 		}
 		totalMaterial = material.length;
+		if (totalMaterial == 0)
+			hasMtl = false;
 	};
 	
 	/********************************************************************
