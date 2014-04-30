@@ -228,7 +228,7 @@ function ObJS(){
 	/********************************************************************
 	 * Getters that determine if an element is being drawn.             *
 	 ********************************************************************/
-	this.isBackgroungDrawn = function(){
+	this.isBackgroundDrawn = function(){
 		return dBackg;
 	};
 	
@@ -247,8 +247,8 @@ function ObJS(){
 	/********************************************************************
 	 * Getters that determine if the model has associated materials.    *
 	 ********************************************************************/
-	this.isBackgroungDrawn = function(){
-		return dBackg;
+	this.hasMaterial = function(){
+		return hasMtl;
 	};
 	
 	/********************************************************************
