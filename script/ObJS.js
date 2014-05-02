@@ -252,6 +252,54 @@ function ObJS(){
 	};
 	
 	/********************************************************************
+	 * Getters for the color of the elements.                           *
+	 ********************************************************************/
+	this.getBackgroundColor = function (){
+		var str = backColor;
+		var r = str.substring(5, str.indexOf(', '));
+		str = str.substring(str.indexOf(', ') + 2);
+		var g = str.substring(0, str.indexOf(', '));
+		str = str.substring(str.indexOf(', ') + 2);
+		var b = str.substring(0, str.indexOf(', '));
+		var a = 1;
+		return {red: r, green: g, blue: b, alpha: a};
+	};
+	
+	this.getVertexColor = function (){
+		var str = vertColor;
+		var r = str.substring(5, str.indexOf(', '));
+		str = str.substring(str.indexOf(', ') + 2);
+		var g = str.substring(0, str.indexOf(', '));
+		str = str.substring(str.indexOf(', ') + 2);
+		var b = str.substring(0, str.indexOf(', '));
+		var a = 1;
+		return {red: r, green: g, blue: b, alpha: a};
+	};
+	
+	this.getEdgeColor = function (){
+		var str = edgeColor;
+		var r = str.substring(5, str.indexOf(', '));
+		str = str.substring(str.indexOf(', ') + 2);
+		var g = str.substring(0, str.indexOf(', '));
+		str = str.substring(str.indexOf(', ') + 2);
+		var b = str.substring(0, str.indexOf(', '));
+		var a = 1;
+		return {red: r, green: g, blue: b, alpha: a};
+	};
+	
+	this.getFaceColor = function (){
+		var str = faceColor;
+		var r = str.substring(5, str.indexOf(', '));
+		str = str.substring(str.indexOf(', ') + 2);
+		var g = str.substring(0, str.indexOf(', '));
+		str = str.substring(str.indexOf(', ') + 2);
+		var b = str.substring(0, str.indexOf(', '));
+		str = str.substring(str.indexOf(', ') + 2);
+		var a = str.substring(0, str.indexOf(')'));
+		return {red: r, green: g, blue: b, alpha: a};
+	};
+	
+	/********************************************************************
 	 * Functions switching the elements drawn (dVerts, dEdges, dFaces). *
 	 * #parameters:                                                     *
 	 *   on (boolean): indicating if the element is to be drawn.        *
