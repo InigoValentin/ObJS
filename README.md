@@ -8,7 +8,7 @@ ObJS
 
 ### Live demo ###
 
-<a href="http://seavenois.com/jstricks/ObJS/">http://seavenois.com/jstricks/ObJS/</a>
+<a href="http://inigovalentin.com/3dview/resource/Bookshelf">http://inigovalentin.com/3dview/resource/Bookshelf</a>
 
 
 
