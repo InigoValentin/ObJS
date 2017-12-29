@@ -247,7 +247,6 @@ function ObJS(){
 	this.isMaterialUsed = function(){
 		return useMtl;
 	};
-	
 	/********************************************************************
 	 * Getters that determine if the model has associated materials.    *
 	 ********************************************************************/
