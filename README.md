@@ -3,7 +3,7 @@ ObJS
 
 ## A 3D Wavefront obj file viewer for HTML5 written in JavaScript ###
 
-<a href="http://imgur.com/MIfKkHG"><img src="http://i.imgur.com/MIfKkHG.png" title="ObJS - Seaplane" /></a>
+<img src="https://objs.inigovalentin.com/img/cover.png" title="ObJS - Seaplane" />
 
 
 ### Live demo ###
