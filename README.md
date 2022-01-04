@@ -8,7 +8,7 @@ ObJS
 
 ### Live demo ###
 
-<a href="https://inigovalentin.com/en/project/objs">https://inigovalentin.com/project/objs</a>
+<a href="https://objs.inigovalentin.com">https://objs.inigovalentin.com</a>
 
 
 

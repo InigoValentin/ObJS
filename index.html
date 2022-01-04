@@ -992,7 +992,8 @@
                         ctx.fillStyle = vertColor;
                         ctx.beginPath();
                         ctx.moveTo(scale * vert[face[i][0]][0], scale * vert[face[i][0]][1]);
-                        for (var j = 1; j < face[i].length - 1; j++) {
+                        var j = 0;
+                        for (j = 0; j < face[i].length - 1; j++) {
                             ctx.lineTo(scale * vert[face[i][j]][0], scale * vert[face[i][j]][1]);
                             if(dEdges){
                                 ctx.stroke();
@@ -1114,6 +1115,16 @@
             section#controls table#colors td{
                 border: 1px solid #000000;
             }
+            section#controls table#colors td.action{
+                background-color: #aaaaaa;
+            }
+            section#controls table#colors td.item{
+                background-color: #bbbbbb;
+            }
+            section#controls table#colors td.action.item{
+                border: 0px;
+                background-color: initial;
+            }
             section#controls table#colors td img{
                 width: 30px;
                 height: 30px;
@@ -1127,6 +1138,7 @@
                 display: block;
                 width: 80%;
                 margin: auto auto 15px auto;
+                height: 20px;
             }
             canvas#ObJSView{
                 width: 500px;
@@ -1203,18 +1215,18 @@
             </select>
             <table id='colors'>
                 <tr>
-                    <td>
+                    <td class='action item'>
                     </td>
-                    <td>
-                        <img src='img/eye.png'/>
+                    <td class='action'>
+                        <img alt='Visible' title='Visible' src='img/eye.png'/>
                     </td>
-                    <td>
-                        <img src='img/color.png'/>
+                    <td class='action'>
+                        <img alt='color' title='color' src='img/color.png'/>
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <img src='img/vert.png'/>
+                    <td class='item'>
+                        <img alt='Vertices' title='Vertices' src='img/vert.png'/>
                     </td>
                     <td>
                         <input type="checkbox"  value="verts" checked onChange="objs.drawVertizes(this.checked);"/>
@@ -1224,8 +1236,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <img src='img/line.png'/>
+                    <td class='item'>
+                        <img alt='Edges' title='Edges' src='img/line.png'/>
                     </td>
                     <td>
                         <input type="checkbox" value="edges" checked onChange="objs.drawEdges(this.checked);"/>
@@ -1235,8 +1247,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <img src='img/face.png'/>
+                    <td class='item'>
+                        <img alt='Faces' title='Faces' src='img/face.png'/>
                     </td>
                     <td>
                         <input type="checkbox" value="faces" checked onChange="objs.drawFaces(this.checked);"/>
@@ -1247,8 +1259,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <img src='img/bg.png'/>
+                    <td class='item'>
+                        <img alt='Background' title='Background' src='img/bg.png'/>
                     </td>
                     <td>
                         <input type="checkbox" value="backg" checked onChange="objs.drawBackground(this.checked);"/>
